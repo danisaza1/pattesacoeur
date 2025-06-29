@@ -10,14 +10,14 @@ export const animals: Animal[] = [
   {
     id: 1,
   name: "Simba",
-  image: "/data/simba_maine_coon.jpg",
+  image: "/data/simba_maine_coon.webp",
   rowSpan: 2,
   colSpan: 2
 },
   {
     id: 2,
     name: "Coco",
-    image: "/data/coco_cochon_dinde.jpg"
+    image: "/data/coco_cochon_dinde.webp"
 
   },
   {
@@ -29,7 +29,7 @@ export const animals: Animal[] = [
    {
     id: 6,
     name: "Oscar",
-    image: "/data/oscar_teckel.jpg",
+    image: "/data/oscar_teckel.webp",
      colSpan: 2, 
   },
 
@@ -49,7 +49,7 @@ export const animals: Animal[] = [
   {
     id: 4,
     name: "Bella",
-    image: "/data/bella_golden_retriever.jpeg",
+    image: "/data/bella_golden_retriever.webp",
  rowSpan: 2
   },
 
