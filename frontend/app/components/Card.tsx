@@ -17,7 +17,7 @@ export default function Card({ image, name }: CardProps) {
   priority={false}
   className="object-cover"
 />
-   
+  
  {/* OVERLAY */}
      {name && (
         <div className="absolute bottom-0 left-0 w-full bg-black/20 text-white p-1 opacity-0 group-hover:opacity-100 transition">
