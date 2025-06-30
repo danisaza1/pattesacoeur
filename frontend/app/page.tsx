@@ -1,9 +1,12 @@
 import Grid from "./components/Grid";
 import SearchForm from "./components/SearchForm";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
     <main className="p-8 flex flex-col items-center w-full">
+      <Header></Header>
       <SearchForm />
       <h1 className="text-3xl font-bold mt-8">Nos animaux à adopter</h1>
       <div className="container mx-auto p-4 bg-zinc-50 rounded flex flex-col items-center">
@@ -15,6 +18,7 @@ export default function Home() {
 </button>
 
       </div>
+      <Footer></Footer>
     </main>
   );
 }
