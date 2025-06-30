@@ -5,7 +5,7 @@ import React from 'react';
 export default function SearchForm() {
   return (
     <section
-      className="results mx-auto max-w-4xl px-4 py-6 bg-white rounded shadow-[0_4px_20px_0_rgba(6,182,212,0.3)]"
+      className="results mx-auto max-w-4xl px-4 py-6 rounded shadow-[0_4px_20px_0_rgba(6,182,212,0.3)] "
       aria-label="Barre de recherche avec les résultats de la recherche"
     >
       <form className="search-form flex flex-col md:flex-row flex-wrap gap-4 w-full items-end">
