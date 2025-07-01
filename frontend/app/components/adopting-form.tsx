@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useState } from "react";
 
 type FormData = {
@@ -24,10 +25,26 @@ export default function AdoptingForm() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
+
+      
     });
 
     const data = await res.json();
     console.log("Réponse du serveur :", data);
+
+ if (res.ok) {
+    // Réinitialiser le formulaire
+    setFormData({
+      firstname: "",
+      lastname: "",
+      location: "",
+      email: "",
+      password: "",
+    });
+  } else {
+    console.error("Erreur lors de la soumission :", data);
+  }
+
   };
 
   const handleChange = (
@@ -47,7 +64,7 @@ export default function AdoptingForm() {
         <p className="mb-6 text-gray-600">
           Remplissez ce formulaire pour rencontrer un animal.
         </p>
-        <form onSubmit={handleSubmit}  className="space-y-4">
+        <form onSubmit={handleSubmit}  className="space-y-4"  >
 
      <label>Nom :</label>
      <div className="flex flex-col md:flex-row gap-4">
@@ -103,10 +120,13 @@ export default function AdoptingForm() {
             name="password"
           />
         </div>
+        <Link  href="/html/benevole.html">
         <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" >Envoyer</button>
-
+        </Link>
         </form>
       </div>
     </section>
   );
 }
+  
+
