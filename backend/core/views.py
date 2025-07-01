@@ -77,14 +77,14 @@ def create_adopter(request):
                 if field not in data or not data[field]:
                     return JsonResponse({"error": f"Le champ {field} est requis."}, status=400)
 
-            adopteur = Adopter.objects.create(
+            adopter = Adopter.objects.create(
                 firstname=data["firstname"],
                 lastname=data["lastname"],
                 email=data["email"],
                 password=data["password"],  # Pense à hasher le mot de passe en prod !
                 location=data["location"],
             )
-            return JsonResponse({"message": "Adopteur créé", "id": adopteur.id})
+            return JsonResponse({"message": "Adopteur créé", "id": adopter.id})
         except json.JSONDecodeError:
             return JsonResponse({"error": "JSON invalide"}, status=400)
         except Exception as e:
