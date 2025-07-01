@@ -49,6 +49,7 @@ class Volunteer(models.Model):
     zipcode = models.CharField(max_length=20)
     telephone = models.CharField(max_length=20, unique=True)
     email = models.EmailField(unique=True)
+    password = models.CharField(max_length=128, null=True, blank=True)
     entry_date = models.DateField()
     exit_date = models.DateField(null=True, blank=True)
     status = models.TextField()
