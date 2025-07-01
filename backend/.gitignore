@@ -26,3 +26,14 @@ db.sqlite3
 .DS_Store
 Thumbs.db
 ehthumbs.db
+
+*.pytest_cache/
+.pytest_cache/
+.tox/
+coverage.*
+htmlcov/
+
+#Sauvegardes & temporaires
+*.swp
+*.bak
+*.tmp
