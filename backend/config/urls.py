@@ -19,5 +19,10 @@ from django.urls import path, include  # include pour importer les URLs d'une ap
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
     path('api/', include('core.urls')),  # redirige /animaux/ vers animaux.urls
 ]
+=======
+    path('api/', include('core.urls')),
+]
+>>>>>>> feae735 (Add GET and POST endpoints for volunteers)

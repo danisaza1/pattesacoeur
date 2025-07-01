@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+<<<<<<< HEAD
 from django.views.decorators.csrf import csrf_exempt
 from .models import Animal
 from django.contrib.auth.hashers import make_password
@@ -7,6 +8,13 @@ import json
 #
 # def home(request):
 #     return HttpResponse("Bienvenue sur l'API !")
+=======
+from django.contrib.auth.hashers import make_password
+from django.views.decorators.csrf import csrf_exempt
+from .models import Animal, Volunteer
+import json
+
+>>>>>>> feae735 (Add GET and POST endpoints for volunteers)
 @csrf_exempt
 def liste_animaux(request):
     if request.method == "GET":
@@ -28,6 +36,7 @@ def liste_animaux(request):
             }
             data.append(animal_dict)
         return JsonResponse(data, safe=False)
+<<<<<<< HEAD
 
 @csrf_exempt
 def liste_volunteers(request):
@@ -37,11 +46,19 @@ def liste_volunteers(request):
             'address', 'zipcode', 'entry_date', 'status'
         )
         data = list(volunteers_qs)
+=======
+@csrf_exempt
+def liste_volunteers(request):
+    if request.method == "GET":
+        volunteers = Volunteer.objects.filter(status="active").values('first_name', 'last_name', 'email')
+        data = list(volunteers)  # Convertir le QuerySet en liste
+>>>>>>> feae735 (Add GET and POST endpoints for volunteers)
         return JsonResponse(data, safe=False)
 
     elif request.method == "POST":
         try:
             data = json.loads(request.body)
+<<<<<<< HEAD
 
             # Extraction des champs
             first_name    = data.get('first_name')
@@ -91,3 +108,58 @@ def liste_volunteers(request):
     #     return JsonResponse({'message': 'Bénévole créé'})
     # else:
     #     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+=======
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            telephone = data.get('telephone')
+            zipcode = data.get('zipcode')
+            entry_date = data.get('entry_date')
+            exit_date = data.get('exit_date', None)
+            status = data.get('status', 'active')
+            password = data.get('password')
+
+            birthdate = data.get('birthdate')
+            missing_fields = [field for field in ['first_name', 'last_name', 'email', 'telephone', 'entry_date', 'birthdate'] if not data.get(field)]
+
+            if not password:
+                missing_fields.append("password")
+
+            if missing_fields:
+                return JsonResponse({
+                    'error': f"Les champs suivants sont obligatoires : {', '.join(missing_fields)}"
+                }, status=400)
+
+            hashed_password = make_password(password)
+            volunteer = Volunteer.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                telephone=telephone,
+                zipcode=zipcode,
+                birthdate=birthdate,
+                entry_date=entry_date,
+                exit_date=exit_date,
+                status=status,
+                password=hashed_password
+            )
+
+            return JsonResponse({
+                'id': volunteer.id,
+                'first_name': volunteer.first_name,
+                'last_name': volunteer.last_name,
+                'email': volunteer.email,
+                'status': volunteer.status,
+            }, status=201)
+
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Format JSON invalide.'}, status=400)
+
+        except Exception as e:
+            print("Erreur serveur :", str(e))  # ← Utile dans la console pour déboguer
+            return JsonResponse({'error': 'Une erreur interne est survenue.'}, status=500)
+
+    else:
+        return JsonResponse({'error': 'Méthode HTTP non autorisée.'}, status=405)
+>>>>>>> feae735 (Add GET and POST endpoints for volunteers)
