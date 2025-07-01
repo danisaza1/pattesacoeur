@@ -16,7 +16,7 @@ export default function Header() {
     🏠Accueil
   </Link>
   <Link
-    href="/html/rechercher.html"
+    href="/adopting"
     className="pr-4 hover:text-orange-500 transition duration-300 ease-in-out"
   >
     🦴J'adopte
