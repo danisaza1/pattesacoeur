@@ -13,13 +13,14 @@ export default function Header() {
       <div className="bg-white flex justify-between items-center px-4 py-3 md:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/"> {/* Added Link to logo for navigation to home */}
-          <img src="/icons/Logo2.png" alt="Logo" className="w-24 sm:w-28 h-auto" />
+          <img src="/icons/logo2.png" alt="Logo" className="w-24 sm:w-28 h-auto" />
         </Link>
 
         {/* Right Section: User Icon, Donate Button, and Hamburger Menu */}
         <div className="flex items-center gap-3 sm:gap-4">
+        <button  >
           <User className="text-white-700 w-6 h-6 sm:w-7 sm:h-7" />
-
+        </button>
           <Link
             href="#Faire-un-don"
             className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm font-semibold rounded-full text-white bg-[#4682a9] hover:bg-[#6aa1c7] transition duration-300"
