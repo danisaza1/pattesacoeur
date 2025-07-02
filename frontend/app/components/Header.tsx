@@ -1,55 +1,83 @@
+'use client'
+
 import Link from "next/link";
-import * as React from "react";
+import React, { useState } from "react";
+import { User, Menu, X } from "lucide-react"; // Import Menu and X icons
 
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <nav className=" rounded-md bg-[#91C8E4] flex flex-row justify-between items-center pr-4 shadow-2xl">
-      <div className="flex items-center"> 
-        <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="200"
-    height="100"
-    version="1"
-    viewBox="0 0 607 187"
-  >
-    <path d="M33 95v60h536V35H33zm531 0v55H38V40h526z"></path>
-    <path d="M304 53.9c-7.5 1.6-13.7 6.8-16.7 13.8-1.5 3.8-1.8 18.9-.3 19.8.6.4 2.9-1 5.1-3 4.3-3.9 6.2-4.1 6.7-.7.2 1.4-1.2 3.8-4.3 7.1-2.7 2.9-4.4 5.5-4 6.2.5.7 3.5-1.7 8.5-6.6 5.2-5.2 8.3-7.6 9.6-7.3 3.7.7 2.3 3.6-6.1 12.5-4.7 5-8.5 9.4-8.5 9.7 0 2 3.4-.3 10.1-7 5.3-5.3 8.2-7.5 9.3-7.1 3.1 1.2 1.5 4.4-6.4 12.2-4.4 4.4-8 8.3-8 8.7 0 2.1 3.1.2 8.5-5.2 6-6.1 9.7-7.6 10.9-4.4.4 1.1-1.5 3.8-5.9 8.3-3.6 3.7-6.5 7.2-6.5 7.7 0 1.9 22 18.4 24.5 18.4 2.7 0 24.5-16.5 24.5-18.5 0-.6-2.7-3.7-6-7-6.1-6-7.6-9.7-4.4-10.9 1.1-.4 3.8 1.5 8.4 6 4.2 4 7.3 6.3 8 5.9.8-.5-1.7-3.6-7-9-5.6-5.6-8.1-8.8-7.8-10.1.7-3.9 3.8-2.6 11.7 5 4.2 4.2 8 7.6 8.4 7.6 2.2 0-.3-3.5-7.8-11-4.7-4.7-8.5-9-8.5-9.6s.7-1.7 1.6-2.4c1.3-1.2 2.6-.2 9.2 6.3 7 7 10.2 9.1 10.2 6.9 0-.4-1.8-2.6-4.1-4.7-5.3-5.2-6.4-7.2-4.8-9.1 1.6-2 2.4-1.8 6.4 1.7 5.2 4.6 6.5 3.5 6.5-5.6 0-8.6-1.3-12.5-6-17.9-4.3-4.9-9.1-6.8-17-6.9-7.6-.1-11.5 1.6-17.5 7.4l-4.1 3.9-3.4-3.6c-6.3-6.5-14.8-9.3-23-7.5m11.4 3.3c2.8.8 5.9 3.1 9.9 7.2 5 5.1 6 5.8 6.8 4.4 5.2-9.4 16.2-14.4 25.7-11.9 4.3 1.2 10.4 5.8 12.3 9.2 1.5 2.9 2.9 11.9 2.3 14.6l-.6 2.4-2.2-2c-2.9-2.7-8-2.8-9.9-.1-1.3 1.8-1.6 1.9-2.7.5-2-2.4-6.7-1.9-8.6 1-.9 1.3-1.4 3-1.2 3.7.3.7-.6 2.1-2 3.2-1.9 1.5-2.3 2.6-1.9 5.1.4 2.4 0 3.6-1.4 4.8-3.4 3-2.4 6.3 3.9 12.9l5.7 6-4.4 3.7c-2.4 2-7.1 5.5-10.4 7.7-5.9 4-6.2 4.1-8.7 2.6-4.3-2.8-17-12.3-17.6-13.4-.4-.5 1.8-3.5 4.8-6.6 6.7-6.9 7.4-8.7 5.1-12.1-1-1.4-1.8-4.2-1.9-6.1-.1-2.3-.8-3.9-2.3-4.8-1.3-.9-2.1-2.5-2.1-4.3 0-2-.8-3.4-2.6-4.6-2.5-1.6-2.8-1.6-5.7 0-2.9 1.7-3.1 1.7-5.2-.3-2.9-2.7-4.7-2.5-8.6.7l-3.2 2.7.5-6.6c.8-9.3 3.8-14.4 10.7-18 5.8-3.1 9.2-3.4 15.5-1.6M239 67.7c0 .5.9 1.8 1.8 3.1 1.4 1.8 2.6 2.3 5.1 2l3.3-.3-2.2-2.8c-1.5-1.8-3.1-2.7-5.1-2.7-1.6 0-2.9.3-2.9.7M403.9 70.9l-2.9 2.9v42l2.6 3.1c6.6 7.9 18.4 2.5 18.4-8.4 0-2.3-.4-2.5-4-2.5-3.9 0-4 .1-4 3.4 0 3.7-1.5 4.9-4.2 3.4-1.6-.8-1.8-2.8-1.8-19.2 0-15 .3-18.6 1.5-19.6 2.1-1.8 4.5-.5 4.5 2.5 0 2.3.4 2.5 4.1 2.5 4.1 0 4.1 0 3.5-3.1-.3-1.7-.6-3.5-.6-3.9s-1.2-1.9-2.6-3.4c-3.9-3.8-10.5-3.7-14.5.3M435.7 70.8l-2.7 2.8v43.6l2.9 2.9c4.1 4.1 10.1 4.1 14.2 0l2.9-2.9V73.8l-2.9-2.9c-4.1-4.1-10.5-4.1-14.4-.1m10.1 23.8c.3 20-.2 22.3-4.2 20.8-1.4-.5-1.6-3-1.6-19.8 0-10.6.3-19.6.7-20s1.6-.6 2.8-.4c1.9.3 2 1 2.3 19.4M464 95.5V123h18v-7h-10V94h10v-7h-10V75h10v-7h-18zM493 90.5c0 24.2.6 27.7 5.1 30.9 3.9 2.7 10.3 2.1 14.1-1.3l3.3-2.9.3-24.6.3-24.6H509v22.3c0 24.6-.4 26.6-5.3 25.3l-2.7-.6V68h-8zM527 95.5V123h7v-5.4c0-3 .4-5.7.9-6.1.6-.3 2 2.2 3.2 5.5 2.2 6 2.2 6 6.1 6 2.8 0 3.8-.4 3.5-1.3-.3-.6-1.3-3.6-2.3-6.4-1.7-5.1-1.7-5.3.2-7.4 1.7-1.9 1.9-3.7 1.9-18.4 0-15.9-.1-16.4-2.4-18.9-2.2-2.4-3.2-2.6-10.3-2.6H527zm13-6V104h-6V75h6zM193.9 78.9c-2.5 2.5-2.9 3.7-2.9 8.3 0 4.9.5 6 5.5 13 4.5 6.3 5.5 8.3 5.5 11.7 0 2.9-.5 4.4-1.6 4.8-2 .8-3.4-1.3-3.4-5.3 0-2.6-.5-3.3-2.5-3.6-3.2-.7-3.5-.2-3.5 4.4 0 8.6 6.4 13.3 13.2 9.7 2.4-1.3 4.8-6.7 4.8-10.9 0-3.8-1-5.7-7.2-13.9-5.1-6.7-6.2-11.7-3.3-14.1 2.2-1.8 3.5-.3 3.5 4 0 4.4 1 5.5 4.6 4.6 1.9-.5 2.4-1.3 2.4-3.7 0-10.3-8.6-15.5-15.1-9M55 100v23h2.9c2.8 0 3-.2 3.3-4.7s.5-4.8 3.6-5.4c6.7-1.4 7.2-2.7 7.2-17.6 0-12.9-.1-13.5-2.5-15.8-2-2.1-3.4-2.5-8.5-2.5h-6zm10.8-4.7.3 11.7H61V95.7c0-6.3.3-11.7.7-12.1s1.4-.5 2.3-.4c1.2.3 1.6 2.4 1.8 12.1M85.5 79.2c-.6 2.9-6.5 41.4-6.5 42.8 0 .5 1.3 1 2.9 1 2.7 0 2.9-.3 3.5-4.8 1.7-11.6 1.6-11.3 4.9-11 2.9.3 3.2.7 3.9 4.8 1.9 11.5 1.7 11 4.9 11 2.8 0 3-.2 2.5-2.8-.3-1.5-1.7-9.2-3.1-17.2-1.3-8-2.9-16.9-3.5-19.9-.5-2.9-1-5.5-1-5.7s-1.8-.4-4-.4c-3.3 0-4 .4-4.5 2.2m6.7 17.6c.3 3.2 0 3.7-2 4-2.3.4-2.3.2-1.7-5.5.4-3.2 1-6.2 1.3-6.8.7-1.1 1.9 3.2 2.4 8.3M104.4 78.5c-1.2 3 .4 4.5 4.6 4.5h4v40h6l.2-19.8.3-19.7 3.8-.3c3.4-.3 3.7-.6 3.7-3.3V77h-11c-8.9 0-11.2.3-11.6 1.5M136 80c0 2.8.2 3 4 3h4v40h6l.2-19.8.3-19.7 3.8-.3c3.4-.3 3.7-.6 3.7-3.3V77h-22zM167 100v23h15v-3c0-2.9-.2-3-4.5-3H173V99.1l4.3-.3c3.7-.3 4.2-.6 4.5-3 .3-2.5 0-2.7-4-3l-4.3-.3v-9l4.3-.3c3.9-.3 4.2-.5 4.2-3.3V77h-15zM242.1 83.2c-.6 3.5-2 12.6-3.1 20.3s-2.3 15.2-2.6 16.7c-.5 2.6-.3 2.8 2.5 2.8 3.3 0 3.3.1 4.8-10 .8-5.2 1-5.5 3.9-5.8 3.5-.3 3.3-.6 5 11 .6 4.5.8 4.8 3.6 4.8s3-.2 2.5-3.3c-2-12.3-6.9-40.4-7.3-41.5-.2-.7-2-1.2-4.3-1.2h-3.9zm7.2 13.1c.4 2.8.2 4-.9 4.4-2.7 1-3.2-1-2.1-8.2 1.1-7.5 1.4-7.2 3 3.8"></path>
-  </svg>
+    <nav className="shadow-2xl">
+      {/* Top Bar: Logo, User Icon, Donate Button */}
+      <div className="bg-white flex justify-between items-center px-4 py-3 md:px-6 lg:px-8">
+        {/* Logo */}
+        <Link href="/"> {/* Added Link to logo for navigation to home */}
+          <img src="/icons/Logo2.png" alt="Logo" className="w-24 sm:w-28 h-auto" />
+        </Link>
+
+        {/* Right Section: User Icon, Donate Button, and Hamburger Menu */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          <User className="text-white-700 w-6 h-6 sm:w-7 sm:h-7" />
+
+          <Link
+            href="#Faire-un-don"
+            className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm font-semibold rounded-full text-white bg-[#4682a9] hover:bg-[#6aa1c7] transition duration-300"
+          >
+            Faire un don 💖
+          </Link>
+
+          {/* Hamburger Menu Icon (visible on small/medium screens) */}
+          <button
+            className="md:hidden p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            {isMenuOpen ? (
+              <X className="w-7 h-7" /> // Close icon when menu is open
+            ) : (
+              <Menu className="w-7 h-7" /> // Hamburger icon when menu is closed
+            )}
+          </button>
+        </div>
       </div>
 
-<div className="flex text-lg font-bold text-gray-700"> 
-  <Link
-    href="#Accueil"
-    className="pr-4 hover:text-blue-50 transition duration-300 ease-in-out"
-  >
-    🏠Accueil
-  </Link>
-  <Link
-    href="/html/rechercher.html"
-    className="pr-4 hover:text-blue-50 transition duration-300 ease-in-out"
-  >
-    🦴J'adopte
-  </Link>
-  <Link
-    href="#Guide-de-ladoption"
-    className="pr-4 hover:text-blue-50 transition duration-300 ease-in-out"
-  >
-    🐟Guide de l'adoption
-  </Link>
-  <Link
-    href="/html/benevole.html"
-    className="hover:text-blue-50 transition duration-300 ease-in-out"
-  >
-    🐿️Devenir bénévole
-  </Link>
-</div>
-
-      <div>
-        <Link
-          href="#Faire-un-don"
-          className="px-4 py-2 border-3 text-sm font-semibold rounded-4xl border-[#69A197] text-[#69A197] bg-white hover:bg-[#69A197] hover:text-white transition">
-          Faire un don 💖
-        </Link>
+      {/* Navigation Menu (full width on desktop, toggled on mobile) */}
+      <div
+        className={`bg-[#4682a9] px-4 py-3  ${isMenuOpen ? "flex" : "hidden"
+          } flex-col md:flex md:flex-row md:items-center md:justify-center`} // Flex-col on mobile when open, row on md+
+      >
+        <div className="flex flex-col justify-between md:flex-row text-lg font-bold text-gray-800 md:max-w-7xl md:mx-auto md:w-full">
+          {/* Navigation Links */}
+          <Link
+            href="#Accueil"
+            className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)] "
+            onClick={() => setIsMenuOpen(false)} // Close menu on link click
+          >
+            🏠 Accueil
+          </Link>
+          <Link
+            href="/html/rechercher.html"
+            className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)] "
+            onClick={() => setIsMenuOpen(false)}
+          >
+            🦴 J'adopte
+          </Link>
+          <Link
+            href="#Guide-de-ladoption"
+            className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)] "
+            onClick={() => setIsMenuOpen(false)}
+          >
+            🐟 Guide de l'adoption
+          </Link>
+          <Link
+            href="/html/benevole.html"
+            className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)] "
+            onClick={() => setIsMenuOpen(false)}
+          >
+            🐿️ Devenir bénévole
+          </Link>
+        </div>
       </div>
     </nav>
   );
