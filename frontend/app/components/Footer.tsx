@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto flex flex-col items-center justify-between gap-8 md:flex-row md:items-start md:gap-6">
         {/* Mission */}
         <div className="mission flex-1 text-center md:text-left md:max-w-xs lg:max-w-sm">
-          <h3 className="text-xl sm:text-2xl font-bold mb-4">PATTE À COEUR</h3>
+          <h3 className="text-xl sm:text-2xl font-bold mb-4">PATTES À COEUR</h3>
           <p className="mb-6 text-sm sm:text-base">
             Notre mission est de trouver des foyers aimants pour chaque animal
             abandonné et de promouvoir le bien-être animal.
