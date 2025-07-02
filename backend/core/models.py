@@ -84,3 +84,28 @@ class Assignment(models.Model):
     end_date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+from django.db import models
+
+class Adopter(models.Model):
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=128)
+    location = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.firstname} {self.lastname}"
+
+    # class Adopting(models.Model):
+    # id = models.BigAutoField(primary_key=True)
+    # firstname = models.TextField()
+    # lastname = models.TextField()
+    # email = models.TextField(db_column='Email', unique=True)  # Field name made lowercase.
+    # password = models.TextField()
+    # location = models.TextField()
+    # created_at = models.DateTimeField(blank=True, null=True)
+    # updated_at = models.DateTimeField(blank=True, null=True)

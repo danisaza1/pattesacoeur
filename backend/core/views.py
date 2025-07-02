@@ -1,3 +1,5 @@
+
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
@@ -10,7 +12,6 @@ def liste_animaux(request):
         animaux = Animal.objects.filter(exit_date__isnull=True)  # animaux encore présents
         data = []
         for animal in animaux:
-            # Convertir l'objet en dict en gardant les champs utiles
             animal_dict = {
                 'id': animal.id,
                 'name': animal.name,
