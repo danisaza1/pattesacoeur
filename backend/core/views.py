@@ -31,9 +31,6 @@ def liste_animaux(request):
 
 @csrf_exempt
 def liste_volunteers(request):
-    print("Vue appelée")
-    # Afficher les attributs de request
-    print(dir(request))
     if request.method == "GET":
         volunteers = Volunteer.objects.filter(status="active").values('first_name', 'last_name', 'email', 'birthdate', 'address', 'zipcode', 'status')
       # Convertir le QuerySet en liste
