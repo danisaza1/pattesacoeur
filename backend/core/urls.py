@@ -9,3 +9,4 @@ urlpatterns = [
     path("volunteers/", liste_volunteers, name="liste_volunteers"),
 ]
 
+
