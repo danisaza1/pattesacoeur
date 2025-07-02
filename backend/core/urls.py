@@ -1,8 +1,13 @@
 from django.urls import path
-from . import views
+from .views import create_adopter
+from .views import  liste_adopters, liste_animaux
 
 urlpatterns = [
-    # path('', views.home, name='home'),
-    path('animaux/', views.liste_animaux, name='liste_animaux'),
-    path('volunteers/', views.liste_volunteers, name='liste_volunteers'),
+    path("adopter/", create_adopter, name="create_adopter"),
+    path("adopters/", liste_adopters, name="liste_adopters"),
+    path("animaux/", liste_animaux, name="liste_animaux"),
 ]
+# urlpatterns = [
+#     path("adopter/", create_adopter, name="create_adopter"),
+#       path("api/adopters/", liste_adopters, name="liste_adopters"),
+# ]
