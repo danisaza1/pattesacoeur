@@ -1,3 +1,4 @@
 Django>=4.2
 psycopg2-binary>=2.9  # Para conectarte con PostgreSQL (Neon)
 python-dotenv>=1.0  # Para leer el .env
+httpie==3.2.4

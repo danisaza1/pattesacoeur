@@ -1,15 +1,7 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Animal
-from django.contrib.auth.hashers import make_password
-from .models import Volunteer
-import json
-
-# def home(request):
-#     return HttpResponse("Bienvenue sur l'API !")
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
-from .models import Animal, Volunteer
+from core.models import Animal, Volunteer
 import json
 
 @csrf_exempt
@@ -33,20 +25,22 @@ def liste_animaux(request):
             }
             data.append(animal_dict)
         return JsonResponse(data, safe=False)
-
+    else:
+        return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
 
 @csrf_exempt
 def liste_volunteers(request):
+    print("Vue appelée")
+    # Afficher les attributs de request
+    print(dir(request))
     if request.method == "GET":
-        volunteers = Volunteer.objects.filter(status="active").values('first_name', 'last_name', 'email')
-        data = list(volunteers)  # Convertir le QuerySet en liste
-        return JsonResponse(data, safe=False)
+        volunteers = Volunteer.objects.filter(status="active").values('first_name', 'last_name', 'email', 'birthdate', 'address', 'zipcode', 'status')
+      # Convertir le QuerySet en liste
+        return JsonResponse(list(volunteers), safe=False)
 
     elif request.method == "POST":
         try:
             data = json.loads(request.body)
-
-
             # Extraction des champs
             first_name    = data.get('first_name')
             last_name     = data.get('last_name')
@@ -75,7 +69,6 @@ def liste_volunteers(request):
                 entry_date=entry_date,
                 exit_date=exit_date_raw if exit_date_raw else None,
             )
-
             return JsonResponse(
                 {'message': 'Bénévole créé', 'id': volunteer.id},
                 status=201
@@ -83,6 +76,32 @@ def liste_volunteers(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-    else:
-        return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+    elif request.method == "PATCH":
+        try:
+            volunteer_id = request.GET.get('id')  # Récupérer l'ID via la query string, ex: ?id=1
+            volunteer = Volunteer.objects.get(id=volunteer_id)
 
+            # Parse les données JSON envoyées avec la requête
+            data = json.loads(request.body)  # On charge les données JSON dans un dictionnaire
+
+            fields_to_update = [
+                'first_name', 'last_name', 'birthdate', 'address',
+                'zipcode', 'telephone', 'email', 'password'
+            ]
+
+            # Itérer sur les champs et mettre à jour ceux présents dans les données
+            for field in fields_to_update:
+                if field in data:
+            # Si c'est le champ 'password', il faut le hacher avant de l'assigner
+                    if field == 'password':
+                        volunteer.password = make_password(data['password'])
+                    else:
+                        setattr(volunteer, field, data[field])  # Met à jour le champ correspondant
+            volunteer.save()
+            return JsonResponse({'message': 'Volunteer added successfully!'}, status=201)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+            return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
