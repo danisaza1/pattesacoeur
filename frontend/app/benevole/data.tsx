@@ -1,4 +1,14 @@
 
+interface Volunteer {
+  first_name: string;
+  last_name: string;
+  email: string;
+  birthdate: string;
+  address: string;
+  zipcode: string;
+  disponibility: string;
+}
+
 const newVolunteer = {
   first_name: "",
   last_name: "",
@@ -25,7 +35,11 @@ async function PostVolunteer() {
 
     const data = await response.json();
     console.log('Volunteer successfully created:', data);
-  } catch (error) {
-    console.error('Error:', e.message)
+  } catch  (error: unknown) {
+  if (error instanceof Error) {
+    console.error(error.message);
+  } else {
+    console.error('Une erreur inconnue est survenue:', error);
   }
+}
 }
