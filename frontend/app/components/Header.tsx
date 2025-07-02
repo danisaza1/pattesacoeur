@@ -18,10 +18,6 @@ export default function Header() {
 
         {/* Right Section: User Icon, Donate Button, and Hamburger Menu */}
         <div className="flex items-center gap-3 sm:gap-4">
-
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
         <button  >
           <User className="text-white-700 w-6 h-6 sm:w-7 sm:h-7" />
         </button>
