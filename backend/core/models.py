@@ -15,6 +15,7 @@ class Staff(models.Model):
 
 
 class Animal(models.Model):
+    id = models.AutoField(primary_key=True)
     staff = models.ForeignKey(Staff, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.TextField()
     animal_type = models.TextField()
@@ -42,6 +43,7 @@ class AnimalStaff(models.Model):
 
 
 class Volunteer(models.Model):
+    id = models.AutoField(primary_key=True)
     first_name = models.TextField()
     last_name = models.TextField()
     birthdate = models.DateField()
@@ -49,18 +51,15 @@ class Volunteer(models.Model):
     zipcode = models.CharField(max_length=20)
     telephone = models.CharField(max_length=20, unique=True)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128, null=True, blank=True)
+    password = models.CharField(max_length=255, default="motdepasse", null=True)
     entry_date = models.DateField()
     exit_date = models.DateField(null=True, blank=True)
     status = models.TextField()
-    password = models.CharField(max_length=255)
-    password = models.CharField(max_length=255, null=True, blank=True)  # Rendre password nullable
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
+        return f'{self.first_name} {self.last_name}'
 
 
 class VolunteerAvailability(models.Model):
