@@ -2,11 +2,11 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <section className="section-end bg-[#4682a9] text-white py-8 mt-16 px-6">
+    <section className="section-end bg-[#4682a9] text-white py-8  px-6">
       <div className="container mx-auto flex flex-col items-center justify-between gap-8 md:flex-row md:items-start md:gap-6">
         {/* Mission */}
         <div className="mission flex-1 text-center md:text-left md:max-w-xs lg:max-w-sm">
-          <h3 className="text-xl sm:text-2xl font-bold mb-4">PATTE À COEUR</h3>
+          <h3 className="text-xl sm:text-2xl font-bold mb-4">PATTES À COEUR</h3>
           <p className="mb-6 text-sm sm:text-base">
             Notre mission est de trouver des foyers aimants pour chaque animal
             abandonné et de promouvoir le bien-être animal.
@@ -41,11 +41,10 @@ export default function Footer() {
           <p className="text-sm sm:text-base">
             116 Rue du Faubourg Saint-Martin <br />
             75010 Paris, France <br />
-            Email: contact@adaopte.fr <br />
+            Email: contact@pattesacoeur.fr <br />
             Tél: +33 1 23 45 67 89
           </p>
         </div>
       </div>
     </section>
-  );
-}
+  )};
