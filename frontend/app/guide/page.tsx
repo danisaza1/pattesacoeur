@@ -22,7 +22,7 @@ export default function AdoptionGuide() {
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
               Chez Adaopte, nous encourageons une démarche d'adoption réfléchie et engagée. Pour cela,
-              il est nécessaire d'être **majeur** et de s'inscrire dans une volonté sincère d'offrir un foyer aimant et stable.
+              il est nécessaire d'être majeur et de s'inscrire dans une volonté sincère d'offrir un foyer aimant et stable.
             </p>
             <p className="text-gray-700 leading-relaxed">
               Une **participation financière** vous sera demandée. Son montant varie en fonction de l'espèce et de la situation spécifique de l'animal,
