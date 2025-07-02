@@ -18,9 +18,10 @@ export default function Header() {
 
         {/* Right Section: User Icon, Donate Button, and Hamburger Menu */}
         <div className="flex items-center gap-3 sm:gap-4">
-        <button  >
-          <User className="text-white-700 w-6 h-6 sm:w-7 sm:h-7" />
-        </button>
+         <Link
+             href="/adopting">
+            <User className="text-white-700 w-6 h-6 sm:w-7 sm:h-7" />
+          </Link>
           <Link
             href="#Faire-un-don"
             className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm font-semibold rounded-full text-white bg-[#4682a9] hover:bg-[#6aa1c7] transition duration-300"
