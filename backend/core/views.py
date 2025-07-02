@@ -133,10 +133,10 @@ def create_adopter(request):
 @csrf_exempt
 def liste_adopters(request):
     if request.method == "GET":
-        adopters = Adopter.objects.all()  # <- attention à .objects et pas .object
+        adopters = Adopter.objects.all()  
         data = []
 
-        for adopter in adopters:  # <- tu avais oublié la boucle
+        for adopter in adopters:  
             adopter_dict = {
                 'id': adopter.id,
                 'prenom': adopter.firstname,
