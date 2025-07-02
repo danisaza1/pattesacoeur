@@ -1,6 +1,7 @@
 'use client'
 
-import Head from "next/head";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import { useState } from "react";
 
 export default function Rechercher() {
@@ -9,26 +10,9 @@ export default function Rechercher() {
 
   return (
     <>
-      <Head>
-        <title>Adaopte</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
-      </Head>
+      <Header></Header>
 
-      <header className="bg-white shadow">
-        <nav className="max-w-7xl mx-auto flex items-center justify-between p-4">
-          <h1 className="text-xl font-bold">
-            <span className="text-pink-600">🐾Ada</span><span>opte</span>
-          </h1>
-          <ul className="flex gap-4 text-sm">
-            <li><a href="/" className="hover:underline">🏠Accueil</a></li>
-            <li><a href="/rechercher" className="hover:underline">🦴J'adopte</a></li>
-            <li><a href="#Guide-de-ladoption" className="hover:underline">🐟Guide de l'adoption</a></li>
-            <li><a href="/benevole" className="hover:underline">🐿️Devenir bénévole</a></li>
-          </ul>
-          <button className="bg-pink-600 text-white px-4 py-2 rounded-full hover:bg-pink-700 transition">Faire un don 🫶</button>
-        </nav>
-      </header>
+    
 
       <main className="py-12 px-4">
         <section className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow">
@@ -93,37 +77,7 @@ className="input"
         </div>
       </main>
 
-      <section className="bg-gray-100 py-12 px-4 grid md:grid-cols-3 gap-10">
-        <div>
-          <h3 className="text-lg font-bold mb-2">ADAOPTE</h3>
-          <p className="text-sm text-gray-700">Notre mission est de retrouver des foyers aimants pour chaque animal abandonné et de promouvoir le bien-être animal.</p>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-bold mb-2">INFORMATIONS UTILES</h3>
-          <ul className="text-sm text-gray-700 space-y-1">
-            <li>FAQs</li>
-            <li>Conseils d'adoption</li>
-            <li>Nous contacter</li>
-            <li>Mentions légales</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-bold mb-2">CONTACT</h3>
-          <p className="text-sm text-gray-700">
-            116 Rue du Faubourg Saint-Martin<br />
-            75010 Paris, France<br />
-            Email: contact@adaopte.fr<br />
-            Tél: +33 1 23 45 67 89
-          </p>
-        </div>
-      </section>
-
-      <footer className="bg-pink-600 text-white text-center py-6">
-        <p>© 2025 Adaopte. Tous droits réservés.</p>
-        <p className="text-sm">Ce site a été développé dans le cadre d'un projet pour ADA Tech School.</p>
-      </footer>
+      <Footer></Footer>
     </>
   );
 }

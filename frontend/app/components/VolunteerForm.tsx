@@ -2,8 +2,8 @@
 
 export default function VolunteerForm() {
   return (
-    <section className="bg-gray-100 py-16 px-4">
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded shadow">
+    <section className="bg-gray-100 py-16 ">
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded shadow flex flex-col items-center ">
         <h2 className="text-2xl font-semibold mb-4">Formulaire d'inscription</h2>
         <p className="mb-6 text-gray-600">
           Remplissez ce formulaire pour joindre notre réseau de bénévoles.
@@ -11,7 +11,7 @@ export default function VolunteerForm() {
         <form
           action="https://formspree.io/f/mjkgrkqk"
           method="POST"
-          className="space-y-4"
+          className="space-y-4 flex flex-col justify-between"
         >
           <div className="flex flex-col md:flex-row gap-4">
             <input required name="firstname" placeholder="Prénom *" className="input" />
