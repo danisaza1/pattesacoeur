@@ -120,9 +120,9 @@ export default function AdoptingForm() {
             name="password"
           />
         </div>
-        <Link  href="/html/benevole.html">
+        {/* <Link  href="/html/benevole.html"> */}
         <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" >Envoyer</button>
-        </Link>
+        {/* </Link> */}
         </form>
       </div>
     </section>
