@@ -115,11 +115,16 @@ def create_adopter(request):
                 if field not in data or not data[field]:
                     return JsonResponse({"error": f"Le champ {field} est requis."}, status=400)
 
+            raw_pwd = data.get("password")
+            if not raw_pwd:
+                return JsonResponse({'error': 'Mot de passe requis'}, status=400)
+            hashed_pwd = make_password(raw_pwd)
+
             adopter = Adopter.objects.create(
                 firstname=data["firstname"],
                 lastname=data["lastname"],
                 email=data["email"],
-                password=data["password"],  # Pense à hasher le mot de passe en prod !
+                password=hashed_pwd,  # N'oublie pas de définir ce champ dans ton modèle
                 location=data["location"],
             )
             return JsonResponse({"message": "Adopteur créé", "id": adopter.id})
