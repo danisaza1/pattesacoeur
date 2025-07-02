@@ -50,7 +50,7 @@ export default function Header() {
         <div className="flex flex-col justify-between md:flex-row text-lg font-bold text-gray-800 md:max-w-7xl md:mx-auto md:w-full">
           {/* Navigation Links */}
           <Link
-            href="#Accueil"
+            href="/"
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)] "
             onClick={() => setIsMenuOpen(false)} // Close menu on link click
           >
