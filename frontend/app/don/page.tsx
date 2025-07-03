@@ -13,7 +13,7 @@ export default function DonationPage() {
     <>
       <Header></Header>
       <div
-        className="bg-[url('/images/main.jpg')] bg-cover bg-no-repeat md:bg-top min-h-screen flex items-start justify-center py-20 ">
+        className="bg-[url('/images/main.jpg')] bg-cover bg-no-repeat min-h-screen flex items-start justify-center py-20 ">
 <div className="flex flex-col m-4 md:flex-row bg-[#4682a9] rounded-4xl p-4 w-full max-w-4xl gap-10 items-center md:m-10">
 
           {/* Texte gauche */}

@@ -41,26 +41,27 @@ export default function Header() {
     className={`bg-[#4682a9] px-4 py-3  ${isMenuOpen ? "flex shadow-md" : "hidden"
       } flex-col md:flex md:flex-row md:items-center md:justify-center`}
   >
-    <div className="flex flex-col items-center justify-center gap-2 md:flex-row text-lg font-bold text-white md:max-w-7xl md:mx-auto md:w-full">
-      {/* Bouton Faire un don visible seulement en mobile dans menu */}
-      {isMenuOpen && (
-        <Link
-          href="/don"
-          className="block md:hidden px-3 py-1.5 text-center sm:px-4 sm:py-2 text-base font-semibold rounded-full text-white bg-[#6aa1c7] hover:bg-[#324960] transition duration-300 mb-4"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Faire un don 💖
-        </Link>
-      )}
+  
+    
 
-      {/* Links */}
-      <Link
+      <div className="flex flex-col items-center justify-center gap-2 md:flex-row text-lg font-bold text-white md:max-w-7xl md:mx-auto md:w-full">
+      {/* Bouton Faire un don visible seulement en mobile dans menu */}
+       <Link
         href="/"
         className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
         onClick={() => setIsMenuOpen(false)}
       >
         🏠 Accueil
       </Link>
+      {isMenuOpen && (
+        <Link
+          href="/don"
+        className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          💖 Faire un don 
+        </Link>
+      )}
       <Link
         href="/recherche"
         className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
