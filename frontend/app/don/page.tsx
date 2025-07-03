@@ -12,12 +12,10 @@ export default function DonationPage() {
   return (
     <>
       <Header></Header>
-      <div
-        className="bg-[url('/images/main.jpg')] bg-cover bg-no-repeat min-h-screen flex items-start justify-center py-20 ">
-<div className="flex flex-col m-4 md:flex-row bg-[#4682a9] rounded-4xl p-4 w-full max-w-4xl gap-10 items-center md:m-10">
-
+      <div className="bg-[url('/images/main.jpg')] bg-cover bg-no-repeat min-h-screen flex items-start justify-center py-20 ">
+        <div className="flex flex-col m-4 md:flex-row bg-[#4682a9] rounded-4xl p-4 w-full max-w-4xl gap-10 items-center md:m-10">
           {/* Texte gauche */}
-          <div className="text-black flex flex-col items-center">
+          <div className="text-white flex flex-col items-center">
             <h1 className="text-4xl sm:text-5xl font-bold mb-4 leading-tight">
               Leur tendrez-vous la patte ?
             </h1>
@@ -93,7 +91,7 @@ export default function DonationPage() {
             </button>
 
             <p className="text-sm text-gray-600 text-center mt-4">
-              (No payment yet – demo only)
+              (Pas de paiement – démonstration uniquement){" "}
             </p>
           </div>
         </div>

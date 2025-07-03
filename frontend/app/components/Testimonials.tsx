@@ -20,7 +20,7 @@ export default function Testimonials() {
             <img src={t.image} alt={t.name} className="w-16 h-16 rounded-full object-cover" />
             <div>
               <p className="text-lg text-gray-800 italic">"{t.text}"</p>
-              <p className="mt-2 font-semibold text-pink-600">– {t.name}</p>
+              <p className="mt-2 font-extrabold text-[#4682a9]">– {t.name}</p>
             </div>
           </div>
         ))}
