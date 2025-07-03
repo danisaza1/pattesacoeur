@@ -1,12 +1,20 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { PostVolunteer, Volunteer } from '../benevole/data';
 
 export default function VolunteerForm() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [city, setCity] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [motivation, setMotivation] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,30 +47,40 @@ export default function VolunteerForm() {
 
     formData.delete("availability");
 
+    // ➡️ Construction de l'objet Volunteer pour PostVolunteer
+    const newVolunteer: Volunteer = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      telephone: telephone,
+      // birthdate: "", // si pas géré ici, ok de laisser vide
+      address: city,
+      zipcode: zipcode,
+    
+      disponibility: {
+    date: selectedDate.toISOString().split('T')[0],
+    start: finalStartTime.toISOString(),
+    end: finalEndTime.toISOString(),
+},
+
+    };
+
     try {
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('Formspree response:', data);
-        alert('Candidature envoyée avec succès!');
-        setSelectedDate(null);
-        setStartTime(null);
-        setEndTime(null);
-        form.reset();
-      } else {
-        console.error('Erreur Formspree:', data);
-        alert('Erreur lors de l\'envoi de la candidature.');
-      }
+      await PostVolunteer(newVolunteer);
+      alert('Candidature envoyée avec succès !');
+      // reset champs
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setTelephone('');
+      setCity('');
+      setZipcode('');
+      setMotivation('');
+      setSelectedDate(null);
+      setStartTime(null);
+      setEndTime(null);
+      event.currentTarget.reset();
     } catch (error) {
-      console.error('Erreur lors de la soumission du formulaire:', error);
       alert('Erreur lors de l\'envoi de la candidature.');
     }
   };
@@ -74,49 +92,67 @@ export default function VolunteerForm() {
         <p className="mb-8 text-lg text-gray-600 max-w-xl text-center">
           Remplissez ce formulaire pour joindre notre réseau de bénévoles.
         </p>
-        <form
-          action="https://formspree.io/f/mjkgrkqk"
-          method="POST"
-          className="space-y-6 flex flex-col justify-between w-full max-w-3xl"
-          onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit} className="w-full">
           <div className="flex flex-col md:flex-row gap-6 justify-between">
             <input
               required
               name="firstname"
               placeholder="Prénom *"
               className="input w-full border border-gray-300 rounded-md px-4 py-2"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
             />
             <input
               required
               name="lastname"
               placeholder="Nom *"
               className="input w-full border border-gray-300 rounded-md px-4 py-2"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </div>
+
+          <div className="flex flex-col md:flex-row gap-6 justify-between">
           <input
             required
             name="email"
             placeholder="Adresse email *"
             type="email"
             className="input w-full border border-gray-300 rounded-md px-4 py-2"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
+
+           <input
+            required
+            name="telephone"
+            placeholder="Téléphone *"
+            className="input w-full border border-gray-300 rounded-md px-4 py-2"
+            value={telephone}
+            onChange={(e) => setTelephone(e.target.value)}
+          />
+          </div>
+
           <div className="flex flex-col md:flex-row gap-6 justify-between">
             <input
               required
               name="city"
               placeholder="Ville *"
               className="input w-full border border-gray-300 rounded-md px-4 py-2"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
             />
             <input
               required
               name="zipcode"
               placeholder="Code postal *"
               className="input w-full border border-gray-300 rounded-md px-4 py-2"
+              value={zipcode}
+              onChange={(e) => setZipcode(e.target.value)}
             />
           </div>
 
-          {/* Sélecteur de Date (Calendrier) - MODIFIED */}
+          {/* Sélecteur de Date */}
           <div className="w-full">
             <label htmlFor="selectedDate" className="block text-sm font-medium text-gray-700 mb-1">Date de disponibilité *</label>
             <DatePicker
@@ -124,18 +160,14 @@ export default function VolunteerForm() {
               onChange={(date: Date | null) => setSelectedDate(date)}
               dateFormat="dd/MM/yyyy"
               placeholderText="Sélectionnez une date *"
-              className="input w-full border border-gray-300 rounded-md px-4 py-2" // This applies to the outer container
-              // IMPORTANT: Use wrapperClassName for the React-Datepicker container,
-              // and the input's classes should go into className directly on the component.
-              // If className is not enough, you might need to target the inner input specifically with CSS,
-              // or use the inputProps prop if the library supports it explicitly for the input.
-              wrapperClassName="w-full" // Added this to make the wrapper full width
+              className="input w-full border border-gray-300 rounded-md px-4 py-2"
+              wrapperClassName="w-full"
               id="selectedDate"
               required
             />
           </div>
 
-          {/* Sélecteurs d'heure de début et de fin */}
+          {/* Heure début et fin */}
           <div className="flex flex-col md:flex-row gap-6 justify-between">
             <div className="w-full">
               <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 mb-1">Heure de début *</label>
@@ -149,7 +181,7 @@ export default function VolunteerForm() {
                 dateFormat="HH:mm"
                 placeholderText="HH:MM"
                 className="input w-full border border-gray-300 rounded-md px-4 py-2"
-                wrapperClassName="w-full" // Added this
+                wrapperClassName="w-full"
                 id="startTime"
                 required
               />
@@ -166,7 +198,7 @@ export default function VolunteerForm() {
                 dateFormat="HH:mm"
                 placeholderText="HH:MM"
                 className="input w-full border border-gray-300 rounded-md px-4 py-2"
-                wrapperClassName="w-full" // Added this
+                wrapperClassName="w-full"
                 id="endTime"
                 required
               />
@@ -178,6 +210,8 @@ export default function VolunteerForm() {
             name="motivation"
             placeholder="Votre motivation *"
             className="input h-40 w-full border border-gray-300 rounded-md px-4 py-2 resize-none"
+            value={motivation}
+            onChange={(e) => setMotivation(e.target.value)}
           />
           <button
             type="submit"
