@@ -1,32 +1,25 @@
-
-interface Volunteer {
+export interface Volunteer {
   first_name: string;
   last_name: string;
   email: string;
-  birthdate: string;
+  telephone: string;
+  // birthdate: string;
   address: string;
   zipcode: string;
-  disponibility: string;
+  disponibility: {
+    date: string;
+    start: string;
+    end: string;
+  };
 }
 
-const newVolunteer = {
-  first_name: "",
-  last_name: "",
-  email: "",
-  birthdate: "",
-  address: "",
-  zipcode: "",
-  disponibility: ""
-};
-
-async function PostVolunteer() {
+export async function PostVolunteer(volunteer: Volunteer) {
+  console.log(JSON.stringify(volunteer, null, 2))
   try {
     const response = await fetch('http://127.0.0.1:8000/api/volunteers/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newVolunteer)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(volunteer)
     });
 
     if (!response.ok) {
@@ -35,11 +28,13 @@ async function PostVolunteer() {
 
     const data = await response.json();
     console.log('Volunteer successfully created:', data);
-  } catch  (error: unknown) {
-  if (error instanceof Error) {
-    console.error(error.message);
-  } else {
-    console.error('Une erreur inconnue est survenue:', error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error('Une erreur inconnue est survenue:', error);
+    }
   }
 }
-}
+
+
