@@ -1,10 +1,21 @@
-
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
 from core.models import Animal, Volunteer, Adopter
 import json
+import logging
+
+# serializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Volunteer
+from .serializers import VolunteerSerializer
+
+
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def liste_animaux(request):
@@ -29,80 +40,50 @@ def liste_animaux(request):
     else:
         return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
 
-@csrf_exempt
-def liste_volunteers(request):
-    if request.method == "GET":
-        volunteers = Volunteer.objects.filter(status="active").values('first_name', 'last_name', 'email', 'birthdate', 'address', 'zipcode', 'status')
-      # Convertir le QuerySet en liste
-        return JsonResponse(list(volunteers), safe=False)
+@api_view(['GET', 'POST', 'PATCH'])
+def volunteers_list(request):
+    if request.method == 'GET':
+        volunteers = Volunteer.objects.filter(status="active")
+        serializer = VolunteerSerializer(volunteers, many=True)
+        return Response(serializer.data)
 
-    elif request.method == "POST":
+    elif request.method == 'POST':
+        serializer = VolunteerSerializer(data=request.data)
+        if serializer.is_valid():
+            if 'password' in serializer.validated_data:
+                serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Serializer errors:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    elif request.method == 'PATCH':
+        volunteer_id = request.query_params.get('id')
+        if not volunteer_id:
+            return Response({"error": "id query param is required"}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            data = json.loads(request.body)
-            # Extraction des champs
-            first_name    = data.get('first_name')
-            last_name     = data.get('last_name')
-            birthdate     = data.get('birthdate')    # format 'YYYY-MM-DD'
-            address       = data.get('address')
-            raw_pwd       = data.get('password')
-            if not raw_pwd:
-                return JsonResponse({'error': 'Mot de passe requis'}, status=400)
-            hashed_pwd    = make_password(raw_pwd) if raw_pwd else None
-            zipcode       = data.get('zipcode')
-            status        = data.get('status')
-            entry_date    = data.get('entry_date')
-            exit_date_raw = data.get('exit_date')     # facultatif
-
-            if not first_name or not last_name or not birthdate or not address:
-                return JsonResponse({'error': 'Certains champs obligatoires sont manquants'}, status=400)
-            # Création de l'objet en base
-            volunteer = Volunteer.objects.create(
-                first_name=first_name,
-                last_name=last_name,
-                birthdate=birthdate,
-                address=address,
-                password=hashed_pwd,
-                zipcode=zipcode,
-                status=status,
-                entry_date=entry_date,
-                exit_date=exit_date_raw if exit_date_raw else None,
-            )
-            return JsonResponse(
-                {'message': 'Bénévole créé', 'id': volunteer.id},
-                status=201
-            )
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
-
-    elif request.method == "PATCH":
-        try:
-            volunteer_id = request.GET.get('id')  # Récupérer l'ID via la query string, ex: ?id=1
             volunteer = Volunteer.objects.get(id=volunteer_id)
+        except Volunteer.DoesNotExist:
+            return Response({"error": "Volunteer not found"}, status=status.HTTP_404_NOT_FOUND)
+        # Récupère les données de la requête
+        data = request.data.copy()
 
-            # Parse les données JSON envoyées avec la requête
-            data = json.loads(request.body)  # On charge les données JSON dans un dictionnaire
+        # Si on passe le statut à 'active' et que entry_date est vide, on remplit entry_date avec aujourd'hui
+        if data.get('status') == 'active' and not volunteer.entry_date:
+            from django.utils import timezone
+            data['entry_date'] = timezone.now().date()
 
-            fields_to_update = [
-                'first_name', 'last_name', 'birthdate', 'address',
-                'zipcode', 'telephone', 'email', 'password'
-            ]
+        serializer = VolunteerSerializer(volunteer, data=data, partial=True)
+        if serializer.is_valid():
+            if 'password' in serializer.validated_data:
+                serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+            serializer.save()
 
-            # Itérer sur les champs et mettre à jour ceux présents dans les données
-            for field in fields_to_update:
-                if field in data:
-            # Si c'est le champ 'password', il faut le hacher avant de l'assigner
-                    if field == 'password':
-                        volunteer.password = make_password(data['password'])
-                    else:
-                        setattr(volunteer, field, data[field])  # Met à jour le champ correspondant
-            volunteer.save()
-            return JsonResponse({'message': 'Volunteer added successfully!'}, status=201)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-    else:
-            return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -134,14 +115,15 @@ def create_adopter(request):
             return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"error": "Méthode non autorisée"}, status=405)
-    
+
+
 @csrf_exempt
 def liste_adopters(request):
     if request.method == "GET":
-        adopters = Adopter.objects.all()  
+        adopters = Adopter.objects.all()
         data = []
 
-        for adopter in adopters:  
+        for adopter in adopters:
             adopter_dict = {
                 'id': adopter.id,
                 'prenom': adopter.firstname,
