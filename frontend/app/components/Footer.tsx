@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -13,17 +14,39 @@ export default function Footer() {
           </p>
 
           <div className="icon-container flex justify-center md:justify-start gap-4">
-            <img src="/icons/facebook.png" alt="Facebook" className="w-7 h-7 sm:w-8 sm:h-8 filter invert" />
-            <img src="/icons/instagram.png" alt="Instagram" className="w-7 h-7 sm:w-8 sm:h-8 filter invert" />
-            <img src="/icons/linkedin.png" alt="LinkedIn" className="w-7 h-7 sm:w-8 sm:h-8 filter invert" />
-            <img src="/icons/twitch.png" alt="Twitch" className="w-7 h-7 sm:w-8 sm:h-8 filter invert" />
+            <img
+              src="/icons/facebook.png"
+              alt="Facebook"
+              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+            />
+            <img
+              src="/icons/instagram.png"
+              alt="Instagram"
+              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+            />
+            <img
+              src="/icons/linkedin.png"
+              alt="LinkedIn"
+              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+            />
+            <img
+              src="/icons/twitch.png"
+              alt="Twitch"
+              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+            />
           </div>
         </div>
 
         {/* Informations utiles */}
         <div className="information flex-1 text-center md:text-left md:max-w-xs lg:max-w-sm">
-          <h3 className="text-xl sm:text-2xl font-bold mb-4">INFORMATIONS UTILES</h3>
-          <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">FAQs</p>
+          <h3 className="text-xl sm:text-2xl font-bold mb-4">
+            INFORMATIONS UTILES
+          </h3>
+          <Link href="/faq">
+          <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
+            FAQs
+          </p>
+          </Link>
           <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
             Conseils d'adoption
           </p>
@@ -47,4 +70,5 @@ export default function Footer() {
         </div>
       </div>
     </section>
-  )};
+  );
+}
