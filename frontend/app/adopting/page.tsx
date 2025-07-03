@@ -1,16 +1,18 @@
 "use client";
 import AdoptingForm from "../components/adopting-form";
-import VolunteerForm from "../components/VolunteerForm";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+// import VolunteerForm from "../components/VolunteerForm";
 
 
 export default function BenevolePage() {
   return (
     <>
-      
+   <Header/>   
 
    <AdoptingForm/>
-<VolunteerForm/>
-    
+{/* <VolunteerForm/> */}
+  <Footer/> 
     </>
   );
 }
