@@ -1,13 +1,12 @@
 
 import { animals } from "../data/animals";
-import { useState, useEffect } from "react";
 import Card from "./Card";
 
 
 export default function Grid() {
   return (
-    <div className="container mx-auto p-4 bg-zinc-50 rounded">
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 auto-rows-[150px] gap-2">
+    <div className="container mx-auto p-9 rounded">
+    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 auto-rows-[150px] gap-2">
       {animals.map((animal) => (
         <div
           key={animal.id}

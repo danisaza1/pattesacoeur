@@ -28,4 +28,3 @@ export default function Card({ image, name }: CardProps) {
   );
 }
 
-    //  className="w-full h-full object-cover"

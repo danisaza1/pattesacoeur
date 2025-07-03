@@ -19,7 +19,7 @@ export default function Header() {
         {/* Right Section: User Icon, Donate Button, and Hamburger Menu */}
         <div className="flex items-center gap-3 sm:gap-4">
          <Link
-             href="#Guide-de-ladoption">
+             href="/adopting">
             <User className="text-white-700 w-6 h-6 sm:w-7 sm:h-7" />
           </Link>
           <Link
@@ -66,7 +66,7 @@ export default function Header() {
             🦴 J'adopte
           </Link>
           <Link
-            href="#Guide-de-ladoption"
+            href="/guide"
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)] "
             onClick={() => setIsMenuOpen(false)}
           >
