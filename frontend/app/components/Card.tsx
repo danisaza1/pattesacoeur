@@ -8,7 +8,7 @@ export type CardProps = {
 
 export default function Card({ image, name }: CardProps) {
   return (
-    <div className=" h-full relative rounded shadow overflow-hidden shadow transition transform hover:scale-105 group">
+    <div className=" h-full relative rounded shadow overflow-hidden transition transform hover:scale-105 group">
     <Image
   src={image}
   alt={name || "Image"}

@@ -17,7 +17,7 @@ export default function Home() {
             <img
               src="/images/bg.jpg"
               alt="Chien mignon"
-              className="w-full h-full object-contain md:object-cover"
+              className="w-full h-full object-cover md:object-cover"
             />
           </div>
 
