@@ -62,12 +62,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   return (
    <section className="bg-gray-100 py-16 px-4">
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded shadow">
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded shadow ">
         <h2 className="text-2xl font-semibold mb-4">Formulaire d'adoption</h2>
         <p className="mb-6 text-gray-600">
           Remplissez ce formulaire pour rencontrer un animal.
         </p>
-        <form onSubmit={handleSubmit}  className="space-y-4"  >
+        <form onSubmit={handleSubmit}  className="space-y-4 "  >
 
      <label>Nom :</label>
      <div className="flex flex-col md:flex-row gap-4">
@@ -123,9 +123,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             name="password"
           />
         </div>
-        {/* <Link  href="/html/benevole.html"> */}
+        <Link  href="/confirmation-formulaire">
         <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" >Envoyer</button>
-        {/* </Link> */}
+        </Link>
         </form>
       </div>
     </section>
