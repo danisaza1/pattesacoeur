@@ -1,5 +1,8 @@
-import Link from "next/link";
+'use client'
+
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 type FormData = {
   firstname: string;
@@ -10,6 +13,8 @@ type FormData = {
 };
 
 export default function AdoptingForm() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState<FormData>({
     firstname: "",
     lastname: "",
@@ -22,7 +27,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/api/adopter/", {
+    const res = await fetch("http://localhost:8000/api/adopters/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -39,6 +44,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         email: "",
         password: "",
       });
+      // ✅ Redirection après succès :
+      router.push("/confirmation-formulaire");
     } else {
       console.error("Erreur HTTP :", res.status);
       console.error("Détails :", data);
@@ -47,6 +54,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.error("Erreur de réseau ou JS :", error);
   }
 };
+
 
   
 
@@ -123,9 +131,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             name="password"
           />
         </div>
-        <Link  href="/confirmation-formulaire">
-        <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" >Envoyer</button>
-        </Link>
+       <button
+  type="submit"
+  className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+>
+  Envoyer
+</button>
         </form>
       </div>
     </section>
