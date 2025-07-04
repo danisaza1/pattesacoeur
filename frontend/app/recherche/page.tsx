@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import SearchForm from "../components/SearchForm";
 
 interface Animal {
   animal_type: string;
@@ -20,8 +21,11 @@ const SearchPage: React.FC = () => {
   const [filteredAnimals, setFilteredAnimals] = useState<Animal[]>([]);
   const [animal_type, setType] = useState<string>("");
   const [city, setCity] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Charger les animaux au montage
+  const animalsPerPage = 6;
+
+  // Cargar animales al montar el componente y llenar inputs desde URL si hay parámetros
   useEffect(() => {
     async function fetchAnimals() {
       const res = await fetch("http://localhost:8000/api/animaux/");
@@ -31,13 +35,12 @@ const SearchPage: React.FC = () => {
     }
     fetchAnimals();
 
-    // Remplir les inputs depuis URL (si paramètres présents)
     const params = new URLSearchParams(window.location.search);
     setType(params.get("type") ?? "");
     setCity(params.get("city") ?? "");
   }, []);
 
-  // Filtrer à chaque changement de type ou city
+  // Filtrar animales según tipo y ciudad
   useEffect(() => {
     const filtred = animals.filter((animal) => {
       return (
@@ -47,15 +50,37 @@ const SearchPage: React.FC = () => {
     });
     setFilteredAnimals(filtred);
 
-    // Mise à jour de l’URL sans recharger la page
+    // Actualizar la URL sin recargar la página
     const params = new URLSearchParams();
     if (animal_type) params.set("type", animal_type);
     if (city) params.set("city", city);
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState(null, "", newUrl);
+
+    // Reiniciar la página actual a 1 al cambiar filtros
+    setCurrentPage(1);
   }, [animal_type, city, animals]);
 
-  // Réinitialiser les filtres
+  // Calcular la paginación
+  const totalPages = Math.ceil(filteredAnimals.length / animalsPerPage);
+  const indexOfLastAnimal = currentPage * animalsPerPage;
+  const indexOfFirstAnimal = indexOfLastAnimal - animalsPerPage;
+  const currentAnimals = filteredAnimals.slice(indexOfFirstAnimal, indexOfLastAnimal);
+
+  // Funciones para paginar
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Resetear filtros
   const resetFilters = () => {
     setType("");
     setCity("");
@@ -63,132 +88,86 @@ const SearchPage: React.FC = () => {
 
   return (
     <>
-    <Header></Header>
-    <main id="section1" className="p-4">
-      <div className="search-container max-w-xl mx-auto">
-        <form
-          className="search"
-          onSubmit={(e) => {
-            e.preventDefault();
-            // Pas besoin de redirection, tout est en React
-          }}
+      <Header />
+      <main id="section1" className="p-4">
+        <SearchForm
+          animal_type={animal_type}
+          setAnimalType={setType}
+          city={city}
+          setCity={setCity}
+          onSubmit={() => {}} // Puedes manejar esto si quieres, aquí no redirige porque filtras en esta página
+          onReset={resetFilters}
+          showResetButton={true}
+            mode="recherche"
+             resultCount={filteredAnimals.length} 
+        />
+
+       
+
+        <figure
+          id="gallery"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto"
         >
-          <div className="section-up mb-6 flex flex-col gap-4">
-            <div className="form-group">
-              <label htmlFor="animal-type" className="block font-semibold mb-1">
-                Type d'animal
-              </label>
-              
-              <input
-                id="animal-type"
-                type="text"
-                list="options-animaux"
-                name="animal"
-                value={animal_type}
-                onChange={(e) => setType(e.target.value)}
-                className="border rounded px-3 py-2 w-full"
-                placeholder="Chien, Chat..."
+          {currentAnimals.map((animal, index) => (
+            <div
+              key={index}
+className="card rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col items-center bg-white"
+            >
+              <img
+                src={`http://localhost:8000/images${animal.photo_url.replace(
+                  "/data",
+                  ""
+                )}`}
+                alt={animal.name}
+                className="w-full h-48 object-contain object-center rounded"
               />
-              <datalist id="options-animaux">
-                <option value="Chien" />
-                <option value="Lapin" />
-                <option value="Chat" />
-                <option value="Cochon d'inde" />
-              </datalist>
+              <div className="card-content mt-4 text-center">
+                <div className="text-sm text-gray-500">{animal.animal_type}</div>
+                <h3 className="text-xl font-bold">{animal.name}</h3>
+                <div className="text-gray-600">
+                  {animal.race} · {animal.birthdate}
+                </div>
+                <div className="text-gray-600">
+                  {animal.city} · {animal.zipcode}
+                </div>
+                <p className="mt-2 text-gray-700">{animal.description}</p>
+                <button
+                  className="rencontrer-button mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+                  onClick={() =>
+                    alert(`Rencontrer ${animal.name} (${animal.race})`)
+                  }
+                >
+                  Rencontrer
+                </button>
+              </div>
             </div>
+          ))}
+        </figure>
 
-            <div className="form-group">
-              <label htmlFor="city-filter" className="block font-semibold mb-1">
-                Localisation
-              </label>
-              <input
-                type="text"
-                id="city-filter"
-                name="city"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="border rounded px-3 py-2 w-full"
-                placeholder="Votre ville"
-              />
-            </div>
-
-            <div className="form-group">
-              <button
-                id="search-button-class"
-                type="submit"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-              >
-                Rechercher 🔍
-              </button>
-            </div>
-          </div>
-
-          <div className="section-down">
-            <div id="result-count" className="mb-4">
-              <p id="result-number" className="font-semibold">
-                Animaux trouvés : {filteredAnimals.length}
-              </p>
-            </div>
-
-            <div className="form-end">
-              <button
-                type="button"
-                id="reset-filters"
-                onClick={resetFilters}
-                className="text-blue-600 underline"
-              >
-                Réinitialiser les filtres
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <figure id="gallery" className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
-        {filteredAnimals.map((animal, index) => (
-          <div
-            key={index}
-            className="card border rounded shadow p-4 flex flex-col items-center"
+        {/* Paginación */}
+        <div className="pagination flex justify-center gap-2 mt-8">
+          <button
+            className="px-2 py-2 text-lg font-bold text-white bg-[#324960] rounded-lg shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+            onClick={handlePrev}
+            disabled={currentPage === 1}
           >
-           <img
-  src={`http://localhost:8000/images${animal.photo_url.replace('/data', '')}`}
-  alt={animal.name}
-              className="w-full h-48 object-cover rounded"
-            />
-            <div className="card-content mt-4 text-center">
-              <div className="text-sm text-gray-500">{animal.animal_type}</div>
-              <h3 className="text-xl font-bold">{animal.name}</h3>
-              <div className="text-gray-600">
-                {animal.race} · {animal.birthdate}
-              </div>
-              <div className="text-gray-600">
-                {animal.city} · {animal.zipcode}
-              </div>
-              <p className="mt-2 text-gray-700">{animal.description}</p>
-              <button
-                className="rencontrer-button mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
-                onClick={() =>
-                  alert(`Rencontrer ${animal.name} (${animal.race})`)
-                }
-              >
-                Rencontrer
-              </button>
-            </div>
-          </div>
-        ))}
-      </figure>
+            &lt; Précédent
+          </button>
 
-      {/* Pagination (à implémenter si besoin) */}
-      <div className="pagination flex justify-center gap-2 mt-8">
-        <button className="page-button bg-gray-300 px-3 py-1 rounded">1</button>
-        <button className="page-button bg-gray-300 px-3 py-1 rounded">2</button>
-        <button className="page-button bg-gray-300 px-3 py-1 rounded">3</button>
-        <button className="next-button bg-blue-500 text-white px-3 py-1 rounded">
-          Suivant &gt;&gt;
-        </button>
-      </div>
-    </main>
-    <Footer></Footer>
+          <span className="px-3 py-1 font-semibold text-center">
+            Page {currentPage} sur {totalPages}
+          </span>
+
+          <button
+            className="px-2 py-2 text-lg font-bold text-white bg-[#324960] rounded-lg shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+            onClick={handleNext}
+            disabled={currentPage === totalPages || totalPages === 0}
+          >
+            Suivant &gt;&gt;
+          </button>
+        </div>
+      </main>
+      <Footer />
     </>
   );
 };
