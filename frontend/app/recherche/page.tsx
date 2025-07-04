@@ -78,6 +78,7 @@ const SearchPage: React.FC = () => {
               <label htmlFor="animal-type" className="block font-semibold mb-1">
                 Type d'animal
               </label>
+              
               <input
                 id="animal-type"
                 type="text"
@@ -150,7 +151,7 @@ const SearchPage: React.FC = () => {
             className="card border rounded shadow p-4 flex flex-col items-center"
           >
            <img
-  src={`http://localhost:8000/media${animal.photo_url.replace('/data', '')}`}
+  src={`http://localhost:8000/images${animal.photo_url.replace('/data', '')}`}
   alt={animal.name}
               className="w-full h-48 object-cover rounded"
             />
