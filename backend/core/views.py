@@ -126,8 +126,8 @@ def liste_adopters(request):
         for adopter in adopters:
             adopter_dict = {
                 'id': adopter.id,
-                'prenom': adopter.firstname,
-                'nom': adopter.lastname,
+                'firstname': adopter.firstname,
+                'lastname': adopter.lastname,
                 'email': adopter.email,
                 'location': adopter.location,
             }
@@ -136,3 +136,26 @@ def liste_adopters(request):
         return JsonResponse(data, safe=False)
     else:
         return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+    
+
+@csrf_exempt
+def lastAdopters(request):
+    if request.method == "GET":
+        adopter = Adopter.objects.latest('created_at')  # Un seul objet, pas une liste
+
+        adopter_dict = {
+            'id': adopter.id,
+            'firstname': adopter.firstname,
+            'lastname': adopter.lastname,
+            'email': adopter.email,
+            'location': adopter.location,
+        }
+
+        return JsonResponse(adopter_dict, safe=False)  # un seul dictionnaire, pas une liste
+
+    else:
+        return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+''
+       
+
+       

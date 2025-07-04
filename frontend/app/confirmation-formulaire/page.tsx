@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import ReturnAdopter from "../components/confirmation";
 import Footer from "../components/Footer";
@@ -11,7 +11,6 @@ export default function Confirmation() {
     <>
    <Header/>   
 <ReturnAdopter/>
-
   <Footer/> 
     </>
   );
