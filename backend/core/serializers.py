@@ -1,6 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
-from .models import Adopter, Volunteer
+from .models import Adopter, Animal, Volunteer
 
 class VolunteerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,3 +25,14 @@ class AdopterSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}
         }
+
+
+class AnimalSerializer(serializers.ModelSerializer):
+    imageUrl = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Animal
+        fields = ['type', 'name', 'breed', 'age', 'city', 'zipcode', 'description', 'imageUrl']
+
+    def get_imageUrl(self, obj):
+        return f"/images/{obj.image_filename}"
