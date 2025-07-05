@@ -1,0 +1,91 @@
+# --- 📦 GÉNÉRAL -----------------------------------------------------------------
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Fichiers temporaires ou de sauvegarde
+*.bak
+*.swp
+*.tmp
+*.log
+
+# Caches Python et JS
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+
+# Sauvegardes automatiques / IDE
+*.sublime-workspace
+.vscode/
+.idea/
+.history/
+*.code-workspace
+
+# --- 🐍 BACKEND : Django / Python -----------------------------------------------
+
+# Environnement virtuel
+env/
+venv/
+backend/env/
+
+# Fichiers de configuration privés
+*.env
+*.env.*
+.local_settings.py
+backend/.env
+
+# Base de données locale
+db.sqlite3
+backend/db.sqlite3
+
+# Résultats de tests / couverture
+*.pytest_cache/
+.pytest_cache/
+.tox/
+coverage.*
+htmlcov/
+
+# Artifacts de build Python
+*.egg-info/
+*.egg
+build/
+dist/
+MANIFEST
+
+# Fichier sensible spécifique
+backend/cookie.txt
+
+# Logs Python
+pip-log.txt
+*.pid
+*.seed
+*.pid.lock
+
+# --- ⚛️ FRONTEND : Next.js / React / Node ---------------------------------------
+
+# Dépendances et artefacts de build
+node_modules/
+.yarn/
+.pnpm/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Répertoires de build Next.js / React
+.next/
+out/
+build/
+dist/
+
+# Cache et config outils
+.eslintcache
+.prettiercache
+.turbo/
+.npm/
+.cache
+
+notes.md
+frontend/notes.md
+frontend/next-env.d.ts
