@@ -1,12 +1,34 @@
+'use client';
 
-'use client'
-
-import { useState } from "react";
-import OwnerStep from "../components/rehoming/OwnerStep";
-import AnimalStep from "../components/rehoming/AnimalStep";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import OwnerStep from '../components/rehoming/OwnerStep';
+import AnimalStep from '../components/rehoming/AnimalStep';
 
 export default function RehomingPage() {
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    fetch('/api/volunteers/me/', {
+      credentials: 'include',
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          // Pas de session : on redirige
+          router.push('/volunteer');
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        router.push('/volunteer');
+      });
+  }, []);
+
+  if (isLoading) return null;
 
   return (
     <section className="flex flex-col items-center bg-white py-10 min-h-screen px-4">
@@ -24,4 +46,3 @@ export default function RehomingPage() {
     </section>
   );
 }
-
