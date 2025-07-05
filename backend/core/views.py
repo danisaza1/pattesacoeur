@@ -1,12 +1,15 @@
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 import json
 import logging
-
 from core.models import Animal, Volunteer, Adopter
 from .serializers import VolunteerSerializer, AdopterSerializer
 
@@ -33,6 +36,27 @@ def liste_animaux(request):
         data.append(animal_dict)
     return JsonResponse(data, safe=False)
 
+@api_view(['POST'])
+def volunteer_login(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    try:
+        volunteer = Volunteer.objects.get(email=email)
+    except Volunteer.DoesNotExist:
+        return Response({"error": "Email incorrect"}, status=400)
+
+    if not check_password(password, volunteer.password):
+        return Response({"error": "Mot de passe incorrect"}, status=400)
+
+    # Créer une session Django
+    request.session['volunteer_id'] = volunteer.id
+    return Response({"message": "Connexion réussie", "volunteer_id": volunteer.id})
+# Logout
+@api_view(['POST'])
+def volunteer_logout(request):
+    request.session.flush()  # supprime toute la session (comme s’il/elle n’était jamais connecté(e))
+    return Response({"message": "Déconnexion réussie"})
 
 # Gestion des bénévoles
 @api_view(['GET', 'POST', 'PATCH'])

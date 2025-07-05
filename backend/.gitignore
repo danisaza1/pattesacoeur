@@ -37,3 +37,5 @@ htmlcov/
 *.swp
 *.bak
 *.tmp
+
+backend/cookie.txt
