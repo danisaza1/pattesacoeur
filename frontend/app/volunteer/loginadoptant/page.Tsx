@@ -19,7 +19,7 @@ export default function Login() {
 
     // Appel à ton API backend pour vérifier l'email + password
     const response = await fetch(
-      "http://localhost:8000/api/volunteers/login/",
+      "http://localhost:8000/api/volunteers/adoptant/",
       {
         method: "POST",
         headers: {
