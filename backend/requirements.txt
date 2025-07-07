@@ -4,3 +4,4 @@ python-dotenv>=1.0  # Para leer el .env
 httpie==3.2.4
 djangorestframework
 django-cors-headers>=3.13.0
+djangorestframework-simplejwt

@@ -5,7 +5,22 @@ from .models import Adopter, Animal, Volunteer
 class VolunteerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Volunteer
-        fields = '__all__'
+        fields = [
+            'id',
+            'email',
+            'first_name',
+            'last_name',
+            'birthdate',
+            'address',
+            'zipcode',
+            'telephone',
+            'disponibility',
+            'entry_date',
+            'exit_date',
+            'status',
+            'created_at',
+            'updated_at',
+        ]
 
     def create(self, validated_data):
         if 'password' in validated_data:

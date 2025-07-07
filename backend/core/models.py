@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class Staff(models.Model):
     firstname = models.TextField()
@@ -41,31 +42,38 @@ class AnimalStaff(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class Volunteer(AbstractUser):
+    # Supprime le champ `username` par défaut pour utiliser l'email comme identifiant
+    username = None
 
-class Volunteer(models.Model):
-    id = models.AutoField(primary_key=True)
-    first_name = models.TextField()
-    last_name = models.TextField()
+    # Champs personnalisés
+    email = models.EmailField(unique=True)  # utilisé comme identifiant principal
+    telephone = models.CharField(max_length=20, unique=True)
     birthdate = models.DateField(null=True, blank=True)
     address = models.TextField()
     zipcode = models.CharField(max_length=20)
-    telephone = models.CharField(max_length=20, unique=True)
-    email = models.EmailField(unique=True)
     disponibility = models.JSONField(null=True, blank=True)
-    password = models.CharField(max_length=255, default="motdepasse", null=True)
     entry_date = models.DateField(null=True, blank=True)
     exit_date = models.DateField(null=True, blank=True)
     status = models.CharField(
         max_length=20,
         default="en attente",
-        choices=[("en attente", "En attente"), ("active", "Active"), ("inactif", "Inactif")],
+        choices=[
+            ("en attente", "En attente"),
+            ("active", "Active"),
+            ("inactif", "Inactif")
+        ],
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+    # Configuration de l'identifiant utilisateur
+    USERNAME_FIELD = 'email'  # champ utilisé pour se connecter
+    REQUIRED_FIELDS = ['first_name', 'last_name']  # requis lors de la création via `createsuperuser`
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+    # (Pas besoin de redéclarer id, first_name, last_name, email, password : hérités d'AbstractUser)
 
 class VolunteerAvailability(models.Model):
     volunteer = models.ForeignKey(Volunteer, null=True, blank=True, on_delete=models.SET_NULL)

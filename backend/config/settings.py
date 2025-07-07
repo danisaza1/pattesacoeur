@@ -1,10 +1,14 @@
-
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-
 from urllib.parse import urlparse, parse_qsl
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # Token d'accès valable pendant 1 heure
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=1),  # Token de rafraîchissement valable pendant 1 heure
+}
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(dotenv_path=Path(BASE_DIR) / ".env")  # charge les variables d'environnement
 print("DATABASE_URL =", os.getenv("DATABASE_URL"))
@@ -33,6 +37,15 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Authentification JWT
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    # Permet uniquement aux utilisateurs authentifiés de voir les données
+    ),
+}
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # doit être en premier
     'django.middleware.security.SecurityMiddleware',
@@ -115,3 +128,5 @@ CORS_ALLOWED_ORIGINS = [
 SESSION_COOKIE_AGE = 3600  # la session dure 1 heure
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # elle reste active même si l’utilisateur ferme l’onglet
 SESSION_SAVE_EVERY_REQUEST = True  # chaque clic ou requête prolonge la session
+
+AUTH_USER_MODEL = 'core.Volunteer'
