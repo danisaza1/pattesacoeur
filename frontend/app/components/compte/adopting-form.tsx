@@ -26,7 +26,7 @@ export default function AdoptingForm() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:8000/api/adopters/", {
+      const res = await fetch("http://localhost:8000/api/adoptant/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -82,10 +82,10 @@ export default function AdoptingForm() {
       </section>
 <section className="bg-gray-100 py-16 px-4">
   <div className="max-w-3xl mx-auto bg-white p-8 rounded-4xl shadow -mt-50 relative z-20">
-    <h2 className="text-2xl font-semibold mb-4 text-center">
-      Formulaire d'adoptant
+    <h2 className="text-3xl font-semibold mb-4 text-center">
+      FORMULAIRE D'ADOPTANT
     </h2>
-    <p className="mb-6 text-gray-600 text-center">
+    <p className="mb-6 text-lg text-gray-600 text-center">
       Remplissez ce formulaire pour rencontrer un animal.
     </p>
 
