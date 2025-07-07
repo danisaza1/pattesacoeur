@@ -1,15 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import { useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 export default function Login() {
   const router = useRouter();
-  const [amount, setAmount] = useState("");
-  const [frequency, setFrequency] = useState("unique");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,13 +29,20 @@ export default function Login() {
     const data = await response.json();
     console.log("Status:", response.status);
     console.log("Response data:", data);
-
-    if (response.ok) {
+ 
+  if (response.ok) {
+    // Récupérer le token d'accès depuis la réponse et le stocker
+    const { access_token } = data;
+    if (access_token) {
+      localStorage.setItem("token", access_token); // Stocker dans localStorage ou utiliser un cookie
       router.push("/volunteer/dashboard");
     } else {
-      alert("Échec de la connexion. Vérifie tes identifiants.");
+      alert("Échec de la connexion. Aucune réponse du serveur.");
     }
-  };
+  } else {
+    alert("Échec de la connexion. Vérifie tes identifiants.");
+  }
+};
 
   return (
     <>
@@ -88,15 +92,15 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="flex justify-center mt-4">
-                <button
-                  type="submit"
-                  className="px-6 py-2 text-lg font-bold text-white bg-[#324960] rounded-lg shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out mt-4"
-                >
-                  Je me connecte
-                </button>
-              </div>
-            </form>
+  <div className="flex justify-center mt-4">
+    <button
+      type="submit"
+      className="w-full bg-[#324960] text-white shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:text-black hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out font-bold py-3 rounded-full flex items-center justify-center gap-2 text-lg"
+    >
+      Je me connecte
+    </button>
+  </div>
+</form>
           </div>
         </main>
         <Footer />
