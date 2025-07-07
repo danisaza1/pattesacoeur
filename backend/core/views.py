@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import json
 import logging
 from core.models import Animal, Volunteer, Adopter
 from .serializers import VolunteerSerializer, AdopterSerializer
@@ -119,3 +118,7 @@ def liste_adopters(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
