@@ -46,7 +46,6 @@ class Volunteer(AbstractUser):
     # Supprime le champ `username` par défaut pour utiliser l'email comme identifiant
     username = None
 
-    # Champs personnalisés
     email = models.EmailField(unique=True)  # utilisé comme identifiant principal
     telephone = models.CharField(max_length=20, unique=True)
     birthdate = models.DateField(null=True, blank=True)
