@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Grid from "./components/Grid";
 import SearchForm from "./components/SearchForm";
@@ -9,28 +9,22 @@ import ButtonAnimalsSection from "./components/ButtonAnimalsSection";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // Pour redirection
 
-
 export default function Home() {
-
- // ✅ États requis
+  // ✅ États requis
   const [animal_type, setAnimalType] = useState("");
   const [city, setCity] = useState("");
 
-   const router = useRouter();
+  const router = useRouter();
 
-   const onSubmit = () => {
+  const onSubmit = () => {
     if (!animal_type && !city) return;
 
     const query = new URLSearchParams();
     if (animal_type) query.append("animal_type", animal_type);
     if (city) query.append("city", city);
 
-    router.push(`/recherche?${query.toString()}`); // ✅ Redirection ici
+    router.push(`/adopter?${query.toString()}`); // ✅ Redirection ici
   };
-
- 
-
-
 
   return (
     <>
@@ -60,14 +54,13 @@ export default function Home() {
                 disponibles à l'adoption.
               </p>
             </div>
-           <SearchForm
-        animal_type={animal_type}
-        setAnimalType={setAnimalType}
-        city={city}
-        setCity={setCity}
-        onSubmit={onSubmit}
-        
-      />
+            <SearchForm
+              animal_type={animal_type}
+              setAnimalType={setAnimalType}
+              city={city}
+              setCity={setCity}
+              onSubmit={onSubmit}
+            />
           </div>
         </section>
 

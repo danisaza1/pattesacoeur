@@ -37,7 +37,11 @@ export default function SearchForm({
         }}
       >
         {/* Div for Type d'animal, Localisation, and Rechercher button */}
-        <div className={`flex flex-col items-center md:flex-row gap-4 w-full ${mode === "recherche" ? "md:items-end" : ""}`}>
+        <div
+          className={`flex flex-col items-center md:flex-row gap-4 w-full ${
+            mode === "recherche" ? "md:items-end" : ""
+          }`}
+        >
           {/* Type d'animal */}
           <section
             className={`form-group flex-1 min-w-[200px] ${

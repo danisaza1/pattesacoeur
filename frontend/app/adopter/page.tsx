@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
@@ -24,27 +24,32 @@ const SearchPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const animalsPerPage = 6;
-
+  const [loading, setLoading] = useState(true);
   // Cargar animales al montar el componente y llenar inputs desde URL si hay parámetros
   useEffect(() => {
     async function fetchAnimals() {
       const res = await fetch("http://localhost:8000/api/animaux/");
       const data = await res.json();
       setAnimals(data);
-      setFilteredAnimals(data);
+      setLoading(false);
     }
     fetchAnimals();
 
     const params = new URLSearchParams(window.location.search);
-    setType(params.get("type") ?? "");
+    setType(params.get("animal_type") ?? "");
     setCity(params.get("city") ?? "");
   }, []);
 
   // Filtrar animales según tipo y ciudad
   useEffect(() => {
+    if (!animals.length) return; // ne filtre que si les animaux ont été chargés
+
     const filtred = animals.filter((animal) => {
       return (
-        (!animal_type || animal.animal_type.toLowerCase().includes(animal_type.toLowerCase())) &&
+        (!animal_type ||
+          animal.animal_type
+            .toLowerCase()
+            .includes(animal_type.toLowerCase())) &&
         (!city || animal.city.toLowerCase().includes(city.toLowerCase()))
       );
     });
@@ -52,7 +57,7 @@ const SearchPage: React.FC = () => {
 
     // Actualizar la URL sin recargar la página
     const params = new URLSearchParams();
-    if (animal_type) params.set("type", animal_type);
+    if (animal_type) params.set("animal_type", animal_type);
     if (city) params.set("city", city);
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState(null, "", newUrl);
@@ -65,7 +70,10 @@ const SearchPage: React.FC = () => {
   const totalPages = Math.ceil(filteredAnimals.length / animalsPerPage);
   const indexOfLastAnimal = currentPage * animalsPerPage;
   const indexOfFirstAnimal = indexOfLastAnimal - animalsPerPage;
-  const currentAnimals = filteredAnimals.slice(indexOfFirstAnimal, indexOfLastAnimal);
+  const currentAnimals = filteredAnimals.slice(
+    indexOfFirstAnimal,
+    indexOfLastAnimal
+  );
 
   // Funciones para paginar
   const handleNext = () => {
@@ -98,51 +106,73 @@ const SearchPage: React.FC = () => {
           onSubmit={() => {}} // Puedes manejar esto si quieres, aquí no redirige porque filtras en esta página
           onReset={resetFilters}
           showResetButton={true}
-            mode="recherche"
-             resultCount={filteredAnimals.length} 
+          mode="recherche"
+          resultCount={filteredAnimals.length}
         />
 
-       
-
-        <figure
-          id="gallery"
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto"
-        >
-          {currentAnimals.map((animal, index) => (
-            <div
-              key={index}
-className="card rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col items-center bg-white"
-            >
-              <img
-                src={`http://localhost:8000/images${animal.photo_url.replace(
-                  "/data",
-                  ""
-                )}`}
-                alt={animal.name}
-                className="w-full h-48 object-contain object-center rounded"
-              />
-              <div className="card-content mt-4 text-center">
-                <div className="text-sm text-gray-500">{animal.animal_type}</div>
-                <h3 className="text-xl font-bold">{animal.name}</h3>
-                <div className="text-gray-600">
-                  {animal.race} · {animal.birthdate}
+        {loading ? (
+          <div className="text-center mt-12 text-xl text-gray-600">
+            Chargement...
+          </div>
+        ) : (
+          <>
+            {currentAnimals.length === 0 ? (
+              <div className="flex flex-col items-center justify-center">
+                <div className="text-center text-gray-500 mt-12 text-lg">
+Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres pour découvrir d'autres animaux adorables.                </div>
+<div>
+                <img
+                  src="/images/loading.png"
+                  alt="loading"
+                  className="w-60 h-60 rounded mb-10"
+                />
                 </div>
-                <div className="text-gray-600">
-                  {animal.city} · {animal.zipcode}
-                </div>
-                <p className="mt-2 text-gray-700">{animal.description}</p>
-                <button
-                  className="rencontrer-button mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
-                  onClick={() =>
-                    alert(`Rencontrer ${animal.name} (${animal.race})`)
-                  }
-                >
-                  Rencontrer
-                </button>
               </div>
-            </div>
-          ))}
-        </figure>
+            ) : (
+              <figure
+                id="gallery"
+                className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto"
+              >
+                {currentAnimals.map((animal, index) => (
+                  <div
+                    key={index}
+                    className="card rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col items-center bg-white"
+                  >
+                    <img
+                      src={`http://localhost:8000/images${animal.photo_url.replace(
+                        "/data",
+                        ""
+                      )}`}
+                      alt={animal.name}
+                      className="w-full h-48 object-contain object-center rounded"
+                    />
+                    <div className="card-content mt-4 text-center">
+                      <div className="text-sm text-gray-500">
+                        {animal.animal_type}
+                      </div>
+                      <h3 className="text-xl font-bold">{animal.name}</h3>
+                      <div className="text-gray-600">
+                        {animal.race} · {animal.birthdate}
+                      </div>
+                      <div className="text-gray-600">
+                        {animal.city} · {animal.zipcode}
+                      </div>
+                      <p className="mt-2 text-gray-700">{animal.description}</p>
+                      <button
+                        className="rencontrer-button mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+                        onClick={() =>
+                          alert(`Rencontrer ${animal.name} (${animal.race})`)
+                        }
+                      >
+                        Rencontrer
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </figure>
+            )}
+          </>
+        )}
 
         {/* Paginación */}
         <div className="pagination flex justify-center gap-2 mt-8">

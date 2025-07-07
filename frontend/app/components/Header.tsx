@@ -1,5 +1,5 @@
 "use client";
-import { PawPrint } from 'lucide-react'
+import { PawPrint } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { User, Menu, X } from "lucide-react"; // Import Menu and X icons
@@ -27,7 +27,7 @@ export default function Header() {
             Faire un don 💖
           </Link>
 
-          <Link href="/middle-page">
+          <Link href="/compte">
             <User className="text-white-700 w-6 h-6 sm:w-7 sm:h-7" />
           </Link>
 
@@ -69,18 +69,18 @@ export default function Header() {
             </Link>
           )}
           <Link
-            href="/recherche"
+            href="/adopter"
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
             onClick={() => setIsMenuOpen(false)}
           >
             🦴 J'adopte
           </Link>
           <Link
-            href="/rehoming"
+            href="/readoption"
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
             onClick={() => setIsMenuOpen(false)}
           >
-            🐾  Remettre à l'asso
+            🐾 Remettre à l'asso
           </Link>
           <Link
             href="/guide"

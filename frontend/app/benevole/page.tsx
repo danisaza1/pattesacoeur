@@ -1,9 +1,9 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import VolunteerForm from "../components/VolunteerForm";
-import Testimonials from "../components/Testimonials";
-import WhyVolunteer from "../components/whyVolunteer";
-import QuestionsSection from "../components/QuestionSection";
+import VolunteerForm from "../components/benevole/BenevoleForm";
+import Testimonials from "../components/benevole/Testimonials";
+import WhyVolunteer from "../components/benevole/whyVolunteer";
+import QuestionsSection from "../components/benevole/QuestionSection";
 
 export default function BenevolePage() {
   return (
@@ -28,7 +28,9 @@ export default function BenevolePage() {
       {/* Ajusta este valor de -mt- para controlar cuánto se superpone el formulario. */}
       {/* Prueba con valores como -mt-24, -mt-32, -mt-40, o incluso más grandes si quieres más superposición. */}
       {/* El z-index asegura que el formulario se muestre por encima de la imagen. */}
-      <div className="-mt-35 relative z-20"> {/* Puedes ajustar este valor */}
+      <div className="-mt-35 relative z-20">
+        {" "}
+        {/* Puedes ajustar este valor */}
         <VolunteerForm />
       </div>
 

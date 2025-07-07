@@ -42,17 +42,20 @@ export default function Footer() {
           <h3 className="text-xl sm:text-2xl font-bold mb-4">
             INFORMATIONS UTILES
           </h3>
+
           <Link href="/faq">
-          <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
-            FAQs
-          </p>
+            <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
+              FAQs
+            </p>
           </Link>
+
+          <Link href="/guide">
           <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
             Conseils d'adoption
           </p>
-          <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
-            Nous contacter
-          </p>
+          </Link>
+
+      
           <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
             Mentions légales
           </p>

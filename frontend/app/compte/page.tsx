@@ -1,16 +1,14 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import VolunteerAdopter from "../components/volunteerAdopter";
-
-
+import VolunteerAdopter from "../components/compte/volunteerAdopter";
 
 export default function midlle() {
   return (
     <>
-   <Header/>   
-<VolunteerAdopter/>
+      <Header />
+      <VolunteerAdopter />
 
-  <Footer/> 
+      <Footer />
     </>
   );
 }
