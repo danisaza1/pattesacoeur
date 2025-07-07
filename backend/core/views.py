@@ -1,17 +1,16 @@
-from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import json
+from rest_framework.permissions import IsAuthenticated
 import logging
 from core.models import Animal, Volunteer, Adopter
 from .serializers import VolunteerSerializer, AdopterSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +36,7 @@ def liste_animaux(request):
     return JsonResponse(data, safe=False)
 
 @api_view(['POST'])
+@permission_classes([])
 def volunteer_login(request):
     email = request.data.get('email')
     password = request.data.get('password')
@@ -49,6 +49,15 @@ def volunteer_login(request):
     if not check_password(password, volunteer.password):
         return Response({"error": "Mot de passe incorrect"}, status=400)
 
+    refresh = RefreshToken.for_user(volunteer)
+    access_token = refresh.access_token
+
+    # Retourne le token d'accès
+    return Response({
+        "message": "Connexion réussie",
+        "access_token": str(access_token),
+        "refresh_token": str(refresh)
+    })
     # Créer une session Django
     request.session['volunteer_id'] = volunteer.id
     return Response({"message": "Connexion réussie", "volunteer_id": volunteer.id})
@@ -58,8 +67,18 @@ def volunteer_logout(request):
     request.session.flush()  # supprime toute la session (comme s’il/elle n’était jamais connecté(e))
     return Response({"message": "Déconnexion réussie"})
 
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def volunteer_me(request):
+    serializer = VolunteerSerializer(request.user)
+    return Response(serializer.data)
+
 # Gestion des bénévoles
-@api_view(['GET', 'POST', 'PATCH'])
+@api_view(['GET', 'POST', 'PATCH', 'DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])  # Permet d'assurer que l'utilisateur est authentifié
 def volunteers_list(request):
     if request.method == 'GET':
         volunteers = Volunteer.objects.filter(status="active")
@@ -97,6 +116,16 @@ def volunteers_list(request):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == 'DELETE':
+        volunteer_id = request.query_params.get('id')
+        if not volunteer_id:
+            return Response({"error": "id query param is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            volunteer = Volunteer.objects.get(id=volunteer_id)
+        except Volunteer.DoesNotExist:
+            return Response({"error": "Volunteer not found"}, status=status.HTTP_404_NOT_FOUND)
+        volunteer.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # Adopters: GET (liste) et POST (création) sur /api/adopter/
 @api_view(['GET', 'POST'])
