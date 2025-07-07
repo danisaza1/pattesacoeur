@@ -6,10 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status
 from rest_framework.response import Response
-<<<<<<< HEAD
-=======
 from rest_framework.permissions import IsAuthenticated
->>>>>>> 0ff84564f512a62fcfd84550897f66c6af10b703
 import logging
 from core.models import Animal, Volunteer, Adopter
 from .serializers import VolunteerSerializer, AdopterSerializer
@@ -157,5 +154,21 @@ def liste_adopters(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
+# :coche_blanche: Dernier adoptant (1 seul objet)
+@api_view(['GET'])
+@permission_classes([])
+@authentication_classes([])
+def lastAdopters(request):
+    try:
+        adopter = Adopter.objects.latest('created_at')
+    except Adopter.DoesNotExist:
+        return JsonResponse({"error": "Aucun adoptant trouvé"}, status=404)
+    adopter_dict = {
+        'id': adopter.id,
+        'firstname': adopter.firstname,
+        'lastname': adopter.lastname,
+        'email': adopter.email,
+        'location': adopter.location,
+    }
+    return JsonResponse(adopter_dict, safe=False)
 
