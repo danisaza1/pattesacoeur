@@ -19,6 +19,8 @@ logger = logging.getLogger(__name__)
 
 # Liste des animaux présents
 @api_view(['GET'])
+@permission_classes([])
+@authentication_classes([])       # ← Supprime la vérification du token JWT
 def liste_animaux(request):
     animaux = Animal.objects.filter(exit_date__isnull=True)
     data = []
@@ -132,6 +134,8 @@ def volunteers_list(request):
 
 # Adopters: GET (liste) et POST (création) sur /api/adopter/
 @api_view(['GET', 'POST'])
+@permission_classes([])
+@authentication_classes([])
 def liste_adopters(request):
     if request.method == "GET":
         adopters = Adopter.objects.all()
