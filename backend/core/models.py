@@ -51,6 +51,7 @@ class Volunteer(AbstractUser):
     birthdate = models.DateField(null=True, blank=True)
     address = models.TextField()
     zipcode = models.CharField(max_length=20)
+    motivation = models.TextField(null=True, blank=True)
     disponibility = models.JSONField(null=True, blank=True)
     entry_date = models.DateField(null=True, blank=True)
     exit_date = models.DateField(null=True, blank=True)
