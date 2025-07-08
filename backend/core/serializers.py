@@ -17,7 +17,7 @@ class VolunteerSerializer(serializers.ModelSerializer):
             'address',
             'zipcode',
             'telephone',
-            'motivation',
+            # 'motivation',
             'disponibility',
             'entry_date',
             'exit_date',
