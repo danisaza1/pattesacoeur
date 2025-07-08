@@ -8,16 +8,17 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 import logging
-from core.models import Animal, Volunteer, Adopter
-from .serializers import VolunteerSerializer, AdopterSerializer
+from core.models import Animal, Volunteer, Adopter, VolunteerAvailability
+from .serializers import VolunteerSerializer, AdopterSerializer, VolunteerAvailabilitySerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 logger = logging.getLogger(__name__)
 
+
 # Liste des animaux présents
 @api_view(['GET'])
 @permission_classes([])
-@authentication_classes([])       # ← Supprime la vérification du token JWT
+@authentication_classes([])
 def liste_animaux(request):
     animaux = Animal.objects.filter(exit_date__isnull=True)
     data = []
@@ -37,6 +38,7 @@ def liste_animaux(request):
         data.append(animal_dict)
     return JsonResponse(data, safe=False)
 
+
 @api_view(['POST'])
 @permission_classes([])
 def volunteer_login(request):
@@ -54,19 +56,16 @@ def volunteer_login(request):
     refresh = RefreshToken.for_user(volunteer)
     access_token = refresh.access_token
 
-    # Retourne le token d'accès
     return Response({
         "message": "Connexion réussie",
         "access_token": str(access_token),
         "refresh_token": str(refresh)
     })
-    # Créer une session Django
-    request.session['volunteer_id'] = volunteer.id
-    return Response({"message": "Connexion réussie", "volunteer_id": volunteer.id})
-# Logout
+
+
 @api_view(['POST'])
 def volunteer_logout(request):
-    request.session.flush()  # supprime toute la session (comme s’il/elle n’était jamais connecté(e))
+    request.session.flush()
     return Response({"message": "Déconnexion réussie"})
 
 
@@ -77,17 +76,12 @@ def volunteer_me(request):
     serializer = VolunteerSerializer(request.user)
     return Response(serializer.data)
 
-# Gestion des bénévoles
 @api_view(['GET', 'POST', 'PATCH', 'DELETE'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])  # Permet d'assurer que l'utilisateur est authentifié
+@authentication_classes([])  # pas d'auth globale ici
+@permission_classes([])      # pas de permission globale non plus
 def volunteers_list(request):
-    if request.method == 'GET':
-        volunteers = Volunteer.objects.filter(status="active")
-        serializer = VolunteerSerializer(volunteers, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
+    if request.method == 'POST':
+        # 🔓 POST ouvert à tous
         serializer = VolunteerSerializer(data=request.data)
         if serializer.is_valid():
             if 'password' in serializer.validated_data:
@@ -95,6 +89,21 @@ def volunteers_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # 🔒 Authentification requise pour GET, PATCH, DELETE
+    jwt_authenticator = JWTAuthentication()
+    try:
+        user_auth_tuple = jwt_authenticator.authenticate(request)
+        if user_auth_tuple is None:
+            return Response({"detail": "Authentification requise."}, status=status.HTTP_401_UNAUTHORIZED)
+        request.user = user_auth_tuple[0]
+    except Exception as e:
+        return Response({"detail": "Authentification invalide."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    if request.method == 'GET':
+        volunteers = Volunteer.objects.filter(status="active")
+        serializer = VolunteerSerializer(volunteers, many=True)
+        return Response(serializer.data)
 
     elif request.method == 'PATCH':
         volunteer_id = request.query_params.get('id')
@@ -106,7 +115,6 @@ def volunteers_list(request):
             return Response({"error": "Volunteer not found"}, status=status.HTTP_404_NOT_FOUND)
 
         data = request.data.copy()
-
         if data.get('status') == 'active' and not volunteer.entry_date:
             data['entry_date'] = timezone.now().date()
 
@@ -129,7 +137,6 @@ def volunteers_list(request):
         volunteer.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# Adopters: GET (liste) et POST (création) sur /api/adopter/
 @api_view(['GET', 'POST'])
 @permission_classes([])
 @authentication_classes([])
@@ -154,7 +161,6 @@ def liste_adopters(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# :coche_blanche: Dernier adoptant (1 seul objet)
 @api_view(['GET'])
 @permission_classes([])
 @authentication_classes([])
@@ -172,3 +178,14 @@ def lastAdopters(request):
     }
     return JsonResponse(adopter_dict, safe=False)
 
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
+def create_availability(request):
+    serializer = VolunteerAvailabilitySerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

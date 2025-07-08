@@ -1,6 +1,9 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from .models import Adopter, Animal, Volunteer
+from core.models import VolunteerAvailability
+
+
 
 class VolunteerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,6 +17,7 @@ class VolunteerSerializer(serializers.ModelSerializer):
             'address',
             'zipcode',
             'telephone',
+            'motivation',
             'disponibility',
             'entry_date',
             'exit_date',
@@ -51,3 +55,9 @@ class AnimalSerializer(serializers.ModelSerializer):
 
     def get_imageUrl(self, obj):
         return f"/images/{obj.image_filename}"
+
+class VolunteerAvailabilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VolunteerAvailability
+        fields = '__all__'
+
