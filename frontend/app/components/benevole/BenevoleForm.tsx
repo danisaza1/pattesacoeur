@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { PostVolunteer, Volunteer } from "../../benevole/data";
+import { PostVolunteer, PostAvailability, Volunteer } from "../../benevole/data";
 
 export default function VolunteerForm() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -16,90 +16,71 @@ export default function VolunteerForm() {
   const [zipcode, setZipcode] = useState("");
   const [motivation, setMotivation] = useState("");
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
 
-    if (!selectedDate || !startTime || !endTime) {
-      alert(
-        "Veuillez sélectionner une date, une heure de début et une heure de fin pour vos disponibilités."
-      );
-      return;
-    }
-    if (startTime.getTime() >= endTime.getTime()) {
-      alert("L'heure de début doit être antérieure à l'heure de fin.");
-      return;
-    }
-
-    const finalStartTime = new Date(selectedDate);
-    finalStartTime.setHours(startTime.getHours(), startTime.getMinutes(), 0, 0);
-
-    const finalEndTime = new Date(selectedDate);
-    finalEndTime.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
-
-    console.log("Date sélectionnée:", selectedDate.toLocaleDateString("fr-FR"));
-    console.log(
-      "Disponibilité de:",
-      finalStartTime.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
+  if (!selectedDate || !startTime || !endTime) {
+    alert(
+      "Veuillez sélectionner une date, une heure de début et une heure de fin pour vos disponibilités."
     );
-    console.log(
-      "À:",
-      finalEndTime.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    );
+    return;
+  }
+  if (startTime.getTime() >= endTime.getTime()) {
+    alert("L'heure de début doit être antérieure à l'heure de fin.");
+    return;
+  }
 
-    const form = event.currentTarget;
-    const formData = new FormData(form);
+  const finalStartTime = new Date(selectedDate);
+  finalStartTime.setHours(startTime.getHours(), startTime.getMinutes(), 0, 0);
 
-    formData.append(
-      "availabilityDate",
-      selectedDate.toISOString().split("T")[0]
-    );
-    formData.append("availabilityStartTime", finalStartTime.toISOString());
-    formData.append("availabilityEndTime", finalEndTime.toISOString());
+  const finalEndTime = new Date(selectedDate);
+  finalEndTime.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
 
-    formData.delete("availability");
-
-    // ➡️ Construction de l'objet Volunteer pour PostVolunteer
+  try {
+    // Création du bénévole
     const newVolunteer: Volunteer = {
       first_name: firstName,
       last_name: lastName,
       email: email,
       telephone: telephone,
-      // birthdate: "", // si pas géré ici, ok de laisser vide
       address: city,
       zipcode: zipcode,
-
-      disponibility: {
-        date: selectedDate.toISOString().split("T")[0],
-        start: finalStartTime.toISOString(),
-        end: finalEndTime.toISOString(),
-      },
+      motivation: motivation,
     };
 
-    try {
-      await PostVolunteer(newVolunteer);
-      alert("Candidature envoyée avec succès !");
-      // reset champs
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setTelephone("");
-      setCity("");
-      setZipcode("");
-      setMotivation("");
-      setSelectedDate(null);
-      setStartTime(null);
-      setEndTime(null);
-      event.currentTarget.reset();
-    } catch (error) {
-      alert("Erreur lors de l'envoi de la candidature.");
-    }
-  };
+    const createdVolunteer = await PostVolunteer(newVolunteer);
+
+    // Enregistrement de la disponibilité
+    const formattedStartTime = finalStartTime.toTimeString().slice(0, 5); // "HH:MM"
+    const formattedEndTime = finalEndTime.toTimeString().slice(0, 5);     // "HH:MM"
+
+    const availabilityData = {
+      volunteer: createdVolunteer.id,
+      start_date: selectedDate.toISOString().split("T")[0],
+      end_date: selectedDate.toISOString().split("T")[0],
+      start_time: formattedStartTime,
+      end_time: formattedEndTime,
+    };
+
+    await PostAvailability(availabilityData);
+
+    alert("Candidature envoyée avec succès !");
+    // reset champs
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setTelephone("");
+    setCity("");
+    setZipcode("");
+    setMotivation("");
+    setSelectedDate(null);
+    setStartTime(null);
+    setEndTime(null);
+  } catch (error) {
+    alert("Erreur lors de l'envoi de la candidature.");
+  }
+};
+
 
   return (
     <section className="relative">
