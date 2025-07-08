@@ -1,5 +1,5 @@
 "use client";
-import { PawPrint } from "lucide-react";
+
 import Link from "next/link";
 import React, { useState } from "react";
 import { User, Menu, X } from "lucide-react"; // Import Menu and X icons
@@ -69,7 +69,7 @@ export default function Header() {
             </Link>
           )}
           <Link
-            href="/adopter"
+            href="/animaux"
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
             onClick={() => setIsMenuOpen(false)}
           >
