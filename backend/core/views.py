@@ -228,12 +228,7 @@ def create_availability(request):
 
 @api_view(['GET'])
 @authentication_classes([])
-@permission_classes([])
+@permission_classes([IsAuthenticated])
 def adoptant_me(request):
-    try:
-        adopter = Adopter.objects.get(email=request.user.email)
-    except Adopter.DoesNotExist:
-        return Response({"error": "Adoptant introuvable."}, status=404)
-
-    serializer = AdopterSerializer(adopter)
+    serializer = AdopterSerializer(request.user)
     return Response(serializer.data)
