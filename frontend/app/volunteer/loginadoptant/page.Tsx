@@ -19,7 +19,7 @@ export default function Login() {
 
     // Appel à ton API backend pour vérifier l'email + password
     const response = await fetch(
-      "http://localhost:8000/api/volunteers/adoptant/",
+      "http://localhost:8000/api/adoptant/login/",
       {
         method: "POST",
         headers: {
@@ -34,7 +34,7 @@ export default function Login() {
     console.log("Response data:", data);
 
     if (response.ok) {
-      router.push("/volunteer/dashboard");
+      router.push("/dashboardadoptant");
     } else {
       alert("Échec de la connexion. Vérifie tes identifiants.");
     }
@@ -89,6 +89,7 @@ export default function Login() {
               </div>
 
               <div className="flex justify-center mt-4">
+
                 <button
                   type="submit"
                   className="px-6 py-2 text-lg font-bold text-white bg-[#324960] rounded-lg shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out mt-4"

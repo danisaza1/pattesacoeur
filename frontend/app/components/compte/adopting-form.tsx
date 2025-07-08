@@ -24,6 +24,7 @@ export default function AdoptingForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Données envoyées :", formData);
 
     try {
       const res = await fetch("http://localhost:8000/api/adoptant/", {
@@ -44,6 +45,8 @@ export default function AdoptingForm() {
           password: "",
         });
         // ✅ Redirection après succès :
+        console.log("Redirection vers confirmationform");
+
         router.push("/confirmationform");
       } else {
         console.error("Erreur HTTP :", res.status);

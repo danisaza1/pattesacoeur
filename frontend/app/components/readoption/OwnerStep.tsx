@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import Header from "../Header";
+import Footer from "../Footer";
 
 type OwnerStepProps = {
   onNext: () => void;
@@ -7,6 +9,8 @@ type OwnerStepProps = {
 
 export default function OwnerStep({ onNext }: OwnerStepProps) {
   return (
+<>
+    <Header></Header>
     <section className="min-h-screen flex items-center justify-center bg-white px-4 py-12">
       <div className="w-full max-w-xl bg-gray-100 rounded-xl shadow-lg p-8 space-y-6">
         <h2 className="text-2xl font-bold text-gray-800 text-center">
@@ -104,5 +108,7 @@ export default function OwnerStep({ onNext }: OwnerStepProps) {
         </div>
       </div>
     </section>
+    <Footer></Footer>
+    </>
   );
 }

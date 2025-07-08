@@ -1,4 +1,4 @@
-"use client";
+
 
 import ReturnAdopter from "../components/compte/confirmation";
 import Footer from "../components/Footer";
