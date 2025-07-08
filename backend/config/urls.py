@@ -19,8 +19,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include  # include pour importer les URLs d'une app
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.http import HttpResponse
 
+def home(request):
+    return HttpResponse("La vie est belle !")
 urlpatterns = [
+    path('', home),
     path('admin/', admin.site.urls),
     path('api/', include('core.urls')),
     # Ajoute les routes pour obtenir et rafraîchir le token

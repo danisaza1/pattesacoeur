@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { PostVolunteer, Volunteer } from "../../benevole/data";
+import { PostVolunteer, PostAvailability, Volunteer } from "../../benevole/data";
 
 export default function VolunteerForm() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -36,53 +36,34 @@ export default function VolunteerForm() {
     const finalEndTime = new Date(selectedDate);
     finalEndTime.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
 
-    console.log("Date sélectionnée:", selectedDate.toLocaleDateString("fr-FR"));
-    console.log(
-      "Disponibilité de:",
-      finalStartTime.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    );
-    console.log(
-      "À:",
-      finalEndTime.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    );
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    formData.append(
-      "availabilityDate",
-      selectedDate.toISOString().split("T")[0]
-    );
-    formData.append("availabilityStartTime", finalStartTime.toISOString());
-    formData.append("availabilityEndTime", finalEndTime.toISOString());
-
-    formData.delete("availability");
-
-    // ➡️ Construction de l'objet Volunteer pour PostVolunteer
-    const newVolunteer: Volunteer = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      telephone: telephone,
-      // birthdate: "", // si pas géré ici, ok de laisser vide
-      address: city,
-      zipcode: zipcode,
-
-      disponibility: {
-        date: selectedDate.toISOString().split("T")[0],
-        start: finalStartTime.toISOString(),
-        end: finalEndTime.toISOString(),
-      },
-    };
-
     try {
-      await PostVolunteer(newVolunteer);
+      // Création du bénévole
+      const newVolunteer: Volunteer = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        telephone: telephone,
+        address: city,
+        zipcode: zipcode,
+        motivation: motivation,
+      };
+
+      const createdVolunteer = await PostVolunteer(newVolunteer);
+
+      // Enregistrement de la disponibilité
+      const formattedStartTime = finalStartTime.toTimeString().slice(0, 5); // "HH:MM"
+      const formattedEndTime = finalEndTime.toTimeString().slice(0, 5); // "HH:MM"
+
+      const availabilityData = {
+        volunteer: createdVolunteer.id,
+        start_date: selectedDate.toISOString().split("T")[0],
+        end_date: selectedDate.toISOString().split("T")[0],
+        start_time: formattedStartTime,
+        end_time: formattedEndTime,
+      };
+
+      await PostAvailability(availabilityData);
+
       alert("Candidature envoyée avec succès !");
       // reset champs
       setFirstName("");
@@ -95,18 +76,17 @@ export default function VolunteerForm() {
       setSelectedDate(null);
       setStartTime(null);
       setEndTime(null);
-      event.currentTarget.reset();
-    } catch (error) {
-      alert("Erreur lors de l'envoi de la candidature.");
+    } catch (error: any) {
+      // Affiche l'erreur détaillée dans la console pour diagnostiquer
+      console.error("❌ Erreur lors de l'envoi de la candidature :", error);
+      alert("Erreur lors de l'envoi de la candidature. Vérifiez la console.");
     }
   };
 
   return (
     <section className="relative">
       <div className="max-w-5xl mx-auto bg-white p-10 rounded-4xl shadow flex flex-col items-center w-full">
-        <h2 className="text-3xl font-semibold mb-6">
-          FORMULAIRE D'INSCRIPTION
-        </h2>
+        <h2 className="text-3xl font-semibold mb-6">FORMULAIRE D'INSCRIPTION</h2>
         <p className="mb-8 text-lg text-gray-600 max-w-xl text-center">
           Remplissez ce formulaire pour joindre notre réseau de bénévoles.
         </p>
