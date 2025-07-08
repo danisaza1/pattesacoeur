@@ -172,3 +172,35 @@ def lastAdopters(request):
     }
     return JsonResponse(adopter_dict, safe=False)
 
+
+@api_view(['POST'])
+@permission_classes([])
+@authentication_classes([])
+def login_adopter(request):
+    email = request.data.get("email")
+    password = request.data.get("password")
+
+    if not email or not password:
+        return Response({"error": "Email et mot de passe requis."}, status=400)
+
+    try:
+        adopter = Adopter.objects.get(email=email)
+    except Adopter.DoesNotExist:
+        return Response({"error": "Adoptant non trouvé."}, status=404)
+
+    if check_password(password, adopter.password):
+        return Response({"message": "Connexion réussie", "adopter_id": adopter.id})
+    else:
+        return Response({"error": "Mot de passe incorrect."}, status=401)
+
+@api_view(['GET'])
+@permission_classes([])
+@authentication_classes([])
+def adopter_detail(request, pk):
+    try:
+        adopter = Adopter.objects.get(pk=pk)
+    except Adopter.DoesNotExist:
+        return Response({"error": "Adoptant introuvable."}, status=404)
+
+    serializer = AdopterSerializer(adopter)
+    return Response(serializer.data)
