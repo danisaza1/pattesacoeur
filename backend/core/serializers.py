@@ -36,10 +36,27 @@ class VolunteerSerializer(serializers.ModelSerializer):
 class AdopterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Adopter
-        fields = ['id', 'firstname', 'lastname', 'email', 'password', 'location']
+        fields = [
+            'id', 
+            'firstname',
+            'lastname',
+            'email',
+            'password',
+            'location'
+            ]
         extra_kwargs = {
             'password': {'write_only': True}
         }
+        
+    def create(self, validated_data):
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
+        return super().update(instance, validated_data)        
 
 
 class AnimalSerializer(serializers.ModelSerializer):
@@ -51,3 +68,5 @@ class AnimalSerializer(serializers.ModelSerializer):
 
     def get_imageUrl(self, obj):
         return f"/images/{obj.image_filename}"
+
+

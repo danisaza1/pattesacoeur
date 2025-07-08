@@ -121,3 +121,6 @@ class Adopter(models.Model):
     # location = models.TextField()
     # created_at = models.DateTimeField(blank=True, null=True)
     # updated_at = models.DateTimeField(blank=True, null=True)
+
+
+

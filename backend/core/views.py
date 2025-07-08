@@ -7,6 +7,9 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+
+
+
 import logging
 from core.models import Animal, Volunteer, Adopter
 from .serializers import VolunteerSerializer, AdopterSerializer
@@ -199,6 +202,19 @@ def login_adopter(request):
 def adopter_detail(request, pk):
     try:
         adopter = Adopter.objects.get(pk=pk)
+    except Adopter.DoesNotExist:
+        return Response({"error": "Adoptant introuvable."}, status=404)
+
+    serializer = AdopterSerializer(adopter)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def adoptant_me(request):
+    try:
+        adopter = Adopter.objects.get(email=request.user.email)
     except Adopter.DoesNotExist:
         return Response({"error": "Adoptant introuvable."}, status=404)
 
