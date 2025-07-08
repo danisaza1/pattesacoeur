@@ -19,12 +19,13 @@ export default function DashboardAdoptant() {
         console.log("Aucun token trouvé, redirection vers login adoptant");
         setTimeout(() => {
     router.push("/volunteers/loginadoptant");
-  }, 3000); // 3 secondes d'attente
+  }, 90000); // 3 secondes d'attente
   return;
 }
 
       try {
         const res = await fetch("http://localhost:8000/api/adoptant/me/", {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -41,7 +42,7 @@ export default function DashboardAdoptant() {
           console.warn("Token invalide ou erreur serveur, redirection...");
           setTimeout(() => {
     router.push("/volunteers/loginadoptant");
-  }, 3000);
+  }, 90000);
   return;
 }
       } catch (err) {
@@ -92,8 +93,8 @@ export default function DashboardAdoptant() {
         <aside className="w-1/4 bg-gray-100 p-6">
           <h2 className="text-xl font-bold mb-4">Mon Profil</h2>
           <div className="mb-6 space-y-1 text-sm text-gray-700">
-            <p><strong>Nom :</strong> {adoptant?.last_name}</p>
-            <p><strong>Prénom :</strong> {adoptant?.first_name}</p>
+            <p><strong>Prénom :</strong> {adoptant?.firstname}</p>
+            <p><strong>Nom :</strong> {adoptant?.lastname}</p>
             <p><strong>Email :</strong> {adoptant?.email}</p>
             <p><strong>Téléphone :</strong> {adoptant?.telephone}</p>
           </div>
