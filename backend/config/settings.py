@@ -11,7 +11,6 @@ SIMPLE_JWT = {
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(dotenv_path=Path(BASE_DIR) / ".env")  # charge les variables d'environnement
-print("DATABASE_URL =", os.getenv("DATABASE_URL"))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

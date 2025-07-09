@@ -74,7 +74,7 @@ export default function AdoptingForm() {
         <div className="absolute inset-0 bg-black/48" />
         {/* Contenu centré verticalement et horizontalement */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center text-white px-6 min-h-[300px]">
-          <h2 className="text-5xl font-bold">DEVENIR BÉNÉVOLE</h2>
+          <h2 className="text-5xl font-bold">DEVENIR ADOPTANT</h2>
           <p className="mt-4 text-xl max-w-2xl text-justify">
             Offrez un peu de votre temps, offrez-leur une seconde chance. En
             devenant bénévole chez Pattes à coeur, vous aidez des animaux à
@@ -86,7 +86,7 @@ export default function AdoptingForm() {
 <section className="bg-gray-100 py-16 px-4">
   <div className="max-w-3xl mx-auto bg-white p-8 rounded-4xl shadow -mt-50 relative z-20">
     <h2 className="text-3xl font-semibold mb-4 text-center">
-      FORMULAIRE D'ADOPTANT
+      FORMULAIRE D&apos;ADOPTANT
     </h2>
     <p className="mb-6 text-lg text-gray-600 text-center">
       Remplissez ce formulaire pour rencontrer un animal.

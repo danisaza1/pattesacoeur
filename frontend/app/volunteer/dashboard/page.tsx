@@ -83,7 +83,7 @@ export default function DashboardAdoptant() {
           </div>
 
           <button
-            onClick={() => router.push("/adoptant/profile")}
+            onClick={() => router.push("/volunteer/profile")}
             className="w-full bg-[#324960] text-white font-bold px-4 py-3 mb-4 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:text-black hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
           >
             Modifier le profil

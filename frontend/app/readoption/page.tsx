@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import OwnerStep from "../components/readoption/OwnerStep";
 import AnimalStep from "../components/readoption/AnimalStep";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function RehomingPage() {
   const [step, setStep] = useState(1);
@@ -26,11 +28,13 @@ export default function RehomingPage() {
         console.error(err);
         router.push("/volunteer");
       });
-  }, []);
+  }, [router]);
 
   if (isLoading) return null;
 
   return (
+    <>
+    <Header></Header>
     <section className="flex flex-col items-center bg-white py-10 min-h-screen px-4">
       <div className="text-center mb-8 max-w-xl">
         <h1 className="text-2xl font-bold text-[#324960] mb-2">
@@ -49,5 +53,7 @@ export default function RehomingPage() {
         )}{" "}
       </div>
     </section>
+    <Footer></Footer>
+    </>
   );
 }

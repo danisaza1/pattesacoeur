@@ -17,18 +17,18 @@ export default function AdoptionGuide() {
             {/* Section: Critères d'Adoption */}
             <div className="bg-[#4682a9] text-white p-8 rounded-lg shadow-md flex flex-col items-center text-center">
               <h2 className="text-2xl font-bold mb-4">
-                Prérequis pour l'Adoption
+                Prérequis pour l&apos;Adoption
               </h2>
               <p className="leading-relaxed mb-4">
-                Chez Adaopte, nous encourageons une démarche d'adoption
-                réfléchie et engagée. Pour cela, il est nécessaire d'être majeur
-                et de s'inscrire dans une volonté sincère d'offrir un foyer
+                Chez Adaopte, nous encourageons une démarche d&apos;adoption
+                réfléchie et engagée. Pour cela, il est nécessaire d&apos;être majeur
+                et de s&apos;inscrire dans une volonté sincère d&apos;offrir un foyer
                 aimant et stable.
               </p>
               <p className="leading-relaxed">
                 Une **participation financière** vous sera demandée. Son montant
-                varie en fonction de l'espèce et de la situation spécifique de
-                l'animal, contribuant ainsi aux frais de soins, d'identification
+                varie en fonction de l&apos;espèce et de la situation spécifique de
+                l&apos;animal, contribuant ainsi aux frais de soins, d&apos;identification
                 et de vaccination.
               </p>
             </div>
@@ -36,11 +36,11 @@ export default function AdoptionGuide() {
             {/* Section: Notre Engagement pour l'Adoption Responsable */}
             <div className="bg-[#4682a9] text-white p-8 rounded-lg shadow-md flex flex-col items-center text-center">
               <h2 className="text-2xl font-bold  mb-4">
-                L'Adoption Responsable : Notre Priorité
+                L&apos;Adoption Responsable : Notre Priorité
               </h2>
               <p className=" leading-relaxed">
-                Adaopte s'assure que chaque adoption est une décision bien
-                mûrie. Nous veillons à ce que l'animal rejoigne une famille qui
+                Adaopte s&apos;assure que chaque adoption est une décision bien
+                mûrie. Nous veillons à ce que l&apos;animal rejoigne une famille qui
                 correspond parfaitement à ses besoins et à son mode de vie.
                 Notre objectif est de créer des correspondances durables et
                 heureuses.
@@ -55,9 +55,9 @@ export default function AdoptionGuide() {
               <p className=" leading-relaxed">
                 En adoptant via Adaopte, vous offrez une chance précieuse.
                 Certains animaux, malheureusement moins sollicités, comme ceux
-                ayant connu des échecs d'adoption, les animaux plus âgés, ou
+                ayant connu des échecs d&apos;adoption, les animaux plus âgés, ou
                 ceux nécessitant des soins spécifiques suite à des pathologies,
-                attendent avec impatience la chaleur et la sécurité d'un foyer
+                attendent avec impatience la chaleur et la sécurité d&apos;un foyer
                 aimant. Votre adoption peut transformer leur destin.
               </p>
             </div>
@@ -65,12 +65,13 @@ export default function AdoptionGuide() {
             {/* Section: Le Parcours d'Adoption */}
             <div className="bg-[#4682a9] text-white p-8 rounded-lg shadow-md flex flex-col items-center text-center">
               <h2 className="text-2xl font-bold  mb-4">
-                Votre Parcours d'Adoption
+                Votre Parcours d&apos;Adoption
+
               </h2>
               <p className=" leading-relaxed mb-6">
                 Pour initier votre adoption chez Adaopte, nous vous invitons à
                 nous décrire votre style de vie et vos attentes envers votre
-                futur compagnon. Notre formulaire d'adoption est conçu pour
+                futur compagnon. Notre formulaire d&apos;adoption est conçu pour
                 cela.
               </p>
               <a
