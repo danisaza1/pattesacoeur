@@ -1,8 +1,8 @@
-"use client";
-
+"use client"
+import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { User, Menu, X } from "lucide-react"; // Import Menu and X icons
+import { User, Menu, X } from "lucide-react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,10 +11,12 @@ export default function Header() {
     <nav className="shadow-2xl">
       <div className="bg-[url] flex justify-between items-center px-4 py-3 md:px-6 lg:px-8">
         <Link href="/">
-          <img
+          <Image
             src="/icons/logo2.png"
             alt="Logo"
-            className="w-24 sm:w-28 h-auto"
+            width={96} // correspond à w-24 (24 * 4px)
+            height={48} // hauteur automatique (ajuste selon ta vraie taille)
+            className="h-auto"
           />
         </Link>
 
@@ -36,11 +38,7 @@ export default function Header() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle navigation menu"
           >
-            {isMenuOpen ? (
-              <X className="w-7 h-7" />
-            ) : (
-              <Menu className="w-7 h-7" />
-            )}
+            {isMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
           </button>
         </div>
       </div>
@@ -73,21 +71,21 @@ export default function Header() {
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
             onClick={() => setIsMenuOpen(false)}
           >
-            🦴 J'adopte
+            🦴 J&apos;adopte
           </Link>
           <Link
             href="/readoption"
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
             onClick={() => setIsMenuOpen(false)}
           >
-            🐾 Remettre à l'asso
+            🐾 Remettre à l&apos;asso
           </Link>
           <Link
             href="/guide"
             className="py-2 md:pr-6 text-white transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
             onClick={() => setIsMenuOpen(false)}
           >
-            🐟 Guide de l'adoption
+            🐟 Guide de l&apos;adoption
           </Link>
           <Link
             href="/benevole"

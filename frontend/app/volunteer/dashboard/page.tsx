@@ -5,9 +5,16 @@ import { useRouter } from "next/navigation";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
+interface Adoptant {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  telephone?: string;
+}
+
 export default function DashboardAdoptant() {
   const router = useRouter();
-  const [adoptant, setAdoptant] = useState<any>(null);
+  const [adoptant, setAdoptant] = useState<Adoptant | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,14 +49,13 @@ export default function DashboardAdoptant() {
     };
 
     fetchAdoptant();
-  }, []);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("/dashboardadoptant");
   };
 
-  // EXEMPLE - données en dur
   const animauxFavoris = [
     { nom: "Luna", type: "Chat", race: "Maine Coon" },
     { nom: "Rex", type: "Chien", race: "Berger allemand" },
@@ -72,7 +78,6 @@ export default function DashboardAdoptant() {
     <>
       <Header />
       <div className="flex min-h-screen bg-gray-50">
-        {/* Colonne gauche : infos utilisateur */}
         <aside className="w-1/4 bg-gray-100 p-6">
           <h2 className="text-xl font-bold mb-4">Mon Profil</h2>
           <div className="mb-6 space-y-1 text-sm text-gray-700">
@@ -97,11 +102,9 @@ export default function DashboardAdoptant() {
           </button>
         </aside>
 
-        {/* Colonne droite : contenu animaux */}
         <main className="flex-grow p-8">
           <h1 className="text-3xl font-bold mb-6">Bienvenue {adoptant?.first_name} 👋</h1>
 
-          {/* Favoris */}
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">🐾 Mes animaux favoris</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -114,7 +117,6 @@ export default function DashboardAdoptant() {
             </ul>
           </section>
 
-          {/* Rencontrés */}
           <section>
             <h2 className="text-2xl font-semibold mb-4">👋 Animaux rencontrés</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">

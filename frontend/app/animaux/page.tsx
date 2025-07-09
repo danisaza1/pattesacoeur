@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SearchForm from "../components/SearchForm";
+import Image from 'next/image';
 
 interface Animal {
   animal_type: string;
@@ -119,13 +120,15 @@ const SearchPage: React.FC = () => {
             {currentAnimals.length === 0 ? (
               <div className="flex flex-col items-center justify-center">
                 <div className="text-center text-gray-500 mt-12 text-lg">
-Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres pour découvrir d'autres animaux adorables.                </div>
+Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres pour découvrir d&apos;autres animaux adorables.                </div>
 <div>
-                <img
-                  src="/images/loading.png"
-                  alt="loading"
-                  className="w-60 h-60 rounded mb-10"
-                />
+                <Image
+  src="/images/loading.png"
+  alt="loading"
+  width={240} // width in pixels
+  height={240} // height in pixels
+  className="rounded mb-10"
+/>
                 </div>
               </div>
             ) : (
@@ -138,14 +141,15 @@ Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres pour découvrir
                     key={index}
                     className="card rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col items-center bg-white"
                   >
-                    <img
-                      src={`http://localhost:8000/images${animal.photo_url.replace(
-                        "/data",
+                    <Image
+  src={`http://localhost:8000/images${animal.photo_url.replace( "/data",
                         ""
                       )}`}
-                      alt={animal.name}
-                      className="w-full h-48 object-contain object-center rounded"
-                    />
+  alt={animal.name}
+  width={400} // ajustez selon la taille réelle ou le design
+  height={192}
+  className="w-full h-48 object-contain object-center rounded"
+/>
                     <div className="card-content mt-4 text-center">
                       <div className="text-sm text-gray-500">
                         {animal.animal_type}

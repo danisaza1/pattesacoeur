@@ -1,4 +1,5 @@
 export interface Volunteer {
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
@@ -16,7 +17,7 @@ export interface Availability {
   end_time: string;
 }
 
-export async function PostVolunteer(volunteer: Volunteer): Promise<any> {
+export async function PostVolunteer(volunteer: Volunteer): Promise<Volunteer> {
   try {
     const response = await fetch("http://localhost:8000/api/volunteers/", {
       method: "POST",
@@ -40,7 +41,7 @@ export async function PostVolunteer(volunteer: Volunteer): Promise<any> {
   }
 }
 
-export async function PostAvailability(availability: Availability): Promise<any> {
+export async function PostAvailability(availability: Availability): Promise<Availability> {
   try {
     const response = await fetch("http://127.0.0.1:8000/api/availability/", {
       method: "POST",

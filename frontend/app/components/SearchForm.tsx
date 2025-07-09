@@ -36,13 +36,13 @@ export default function SearchForm({
           onSubmit();
         }}
       >
-        {/* Div for Type d'animal, Localisation, and Rechercher button */}
+        {/* Div for Type d&apos;animal, Localisation, and Rechercher button */}
         <div
           className={`flex flex-col items-center md:flex-row gap-4 w-full ${
             mode === "recherche" ? "md:items-end" : ""
           }`}
         >
-          {/* Type d'animal */}
+          {/* Type d&apos;animal */}
           <section
             className={`form-group flex-1 min-w-[200px] ${
               mode === "recherche" ? "mx-auto text-center md:text-left" : ""
@@ -52,7 +52,7 @@ export default function SearchForm({
               htmlFor="search-pet"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Type d'animal
+              Type d&apos;animal
             </label>
             <select
               name="pet"
@@ -65,7 +65,7 @@ export default function SearchForm({
               <option value="chien">Chien</option>
               <option value="chat">Chat</option>
               <option value="lapin">Lapin</option>
-              <option value="rongeur">Cochon d'inde</option>
+              <option value="rongeur">Cochon d&apos;inde</option>
             </select>
           </section>
 

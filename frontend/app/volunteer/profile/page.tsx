@@ -1,9 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+
+type Disponibility = {
+  // Exemple de type, adapte selon ta donnée réelle
+  days: string[];
+  hours: string[];
+};
 
 interface Volunteer {
   id: number;
@@ -14,7 +20,7 @@ interface Volunteer {
   address: string;
   zipcode: string;
   telephone: string;
-  disponibility: any;
+  disponibility: Disponibility; // évite any
   status: string;
 }
 
@@ -22,99 +28,119 @@ export default function ProfilePage() {
   const router = useRouter();
   const [volunteer, setVolunteer] = useState<Volunteer | null>(null);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState<Partial<Volunteer> & { password?: string; password_confirm?: string }>({});
+  const [form, setForm] = useState<
+    Partial<Volunteer> & { password?: string; password_confirm?: string }
+  >({});
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  // token localStorage à l'intérieur d'un useEffect ou d'une fonction, pas directement dans render
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!token) {
-        router.push('/volunteer/login');
+        router.push("/volunteer/login");
         return;
       }
 
       try {
-        const res = await fetch('http://localhost:8000/api/volunteers/me/', {
+        const res = await fetch("http://localhost:8000/api/volunteers/me/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         if (res.ok) {
-          const data = await res.json();
+          const data: Volunteer = await res.json();
           setVolunteer(data);
           setForm(data);
         } else {
-          router.push('/volunteer/login');
+          router.push("/volunteer/login");
         }
       } catch (err) {
-        console.error('Erreur :', err);
-        router.push('/volunteer/login');
+        console.error("Erreur :", err);
+        router.push("/volunteer/login");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    if (token) {
+      fetchData();
+    }
+  }, [router, token]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async () => {
     if (!token || !volunteer) return;
 
     if (form.password && form.password !== form.password_confirm) {
-      alert('Les mots de passe ne correspondent pas.');
+      alert("Les mots de passe ne correspondent pas.");
       return;
     }
 
+    // Supprime password_confirm de data envoyée
     const { password_confirm, ...dataToSend } = form;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/volunteers/?id=${volunteer.id}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const res = await fetch(
+        `http://localhost:8000/api/volunteers/?id=${volunteer.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
 
       if (res.ok) {
-        alert('Profil mis à jour 🎉');
+        alert("Profil mis à jour 🎉");
       } else {
-        alert('Erreur lors de la mise à jour');
+        alert("Erreur lors de la mise à jour");
       }
     } catch (err) {
       console.error(err);
+      alert("Erreur lors de la mise à jour");
     }
   };
 
   const handleDelete = async () => {
     if (!token || !volunteer) return;
-    const confirm = window.confirm('Voulez-vous vraiment supprimer votre compte ?');
-    if (!confirm) return;
+    const confirmDelete = window.confirm(
+      "Voulez-vous vraiment supprimer votre compte ?"
+    );
+    if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/volunteers/?id=${volunteer.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:8000/api/volunteers/?id=${volunteer.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (res.ok) {
-        alert('Compte supprimé 😢');
-        localStorage.removeItem('token');
-        router.push('/');
+        alert("Compte supprimé 😢");
+        localStorage.removeItem("token");
+        router.push("/");
       } else {
-        alert('Erreur lors de la suppression');
+        alert("Erreur lors de la suppression");
       }
     } catch (err) {
       console.error(err);
+      alert("Erreur lors de la suppression");
     }
   };
 
@@ -132,7 +158,7 @@ export default function ProfilePage() {
             <input
               className="w-full border rounded px-3 py-2"
               name="first_name"
-              value={form.first_name || ''}
+              value={form.first_name || ""}
               onChange={handleChange}
             />
           </label>
@@ -142,7 +168,7 @@ export default function ProfilePage() {
             <input
               className="w-full border rounded px-3 py-2"
               name="last_name"
-              value={form.last_name || ''}
+              value={form.last_name || ""}
               onChange={handleChange}
             />
           </label>
@@ -152,7 +178,7 @@ export default function ProfilePage() {
             <input
               className="w-full border rounded px-3 py-2"
               name="email"
-              value={form.email || ''}
+              value={form.email || ""}
               onChange={handleChange}
             />
           </label>
@@ -162,7 +188,7 @@ export default function ProfilePage() {
             <input
               className="w-full border rounded px-3 py-2"
               name="telephone"
-              value={form.telephone || ''}
+              value={form.telephone || ""}
               onChange={handleChange}
             />
           </label>
@@ -172,7 +198,7 @@ export default function ProfilePage() {
             <input
               className="w-full border rounded px-3 py-2"
               name="zipcode"
-              value={form.zipcode || ''}
+              value={form.zipcode || ""}
               onChange={handleChange}
             />
           </label>
@@ -182,7 +208,7 @@ export default function ProfilePage() {
             <input
               className="w-full border rounded px-3 py-2"
               name="address"
-              value={form.address || ''}
+              value={form.address || ""}
               onChange={handleChange}
             />
           </label>
@@ -193,7 +219,7 @@ export default function ProfilePage() {
               type="password"
               className="w-full border rounded px-3 py-2"
               name="password"
-              value={form.password || ''}
+              value={form.password || ""}
               onChange={handleChange}
               placeholder="Si vide, pas de modification"
             />
@@ -205,27 +231,26 @@ export default function ProfilePage() {
               type="password"
               className="w-full border rounded px-3 py-2"
               name="password_confirm"
-              value={form.password_confirm || ''}
+              value={form.password_confirm || ""}
               onChange={handleChange}
             />
           </label>
         </div>
 
-<div className="mt-6 flex gap-4">
-  <button
-    onClick={handleSubmit}
-    className="flex-1 bg-[#324960] text-white font-bold px-4 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:text-black hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
-  >
-    Mettre à jour
-  </button>
-  <button
-    onClick={handleDelete}
-    className="flex-1 bg-red-600 text-white font-bold px-4 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-red-700 hover:shadow-md active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
-  >
-    Supprimer mon compte
-  </button>
-</div>
-
+        <div className="mt-6 flex gap-4">
+          <button
+            onClick={handleSubmit}
+            className="flex-1 bg-[#324960] text-white font-bold px-4 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:text-black hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+          >
+            Mettre à jour
+          </button>
+          <button
+            onClick={handleDelete}
+            className="flex-1 bg-red-600 text-white font-bold px-4 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-red-700 hover:shadow-md active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+          >
+            Supprimer mon compte
+          </button>
+        </div>
       </div>
       <Footer />
     </>

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Testimonials() {
   return (
     <section className="bg-gray-50 py-16 px-4">
@@ -21,13 +23,16 @@ export default function Testimonials() {
             key={i}
             className="bg-white p-6 rounded-xl shadow hover:shadow-md transition flex gap-4 items-center"
           >
-            <img
+            <Image
               src={t.image}
               alt={t.name}
-              className="w-16 h-16 rounded-full object-cover"
+              width={64}
+              height={64}
+              className="rounded-full object-cover"
             />
             <div>
-              <p className="text-lg text-gray-800 italic">"{t.text}"</p>
+              {/* Utilisation de guillemets simples autour du texte pour éviter l'erreur */}
+              <p className="text-lg text-gray-800 italic">‘{t.text}’</p>
               <p className="mt-2 font-extrabold text-[#4682a9]">– {t.name}</p>
             </div>
           </div>

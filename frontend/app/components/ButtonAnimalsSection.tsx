@@ -1,9 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-const ButtonAnimalsSection: React.FC<{ children?: React.ReactNode }> = ({
-  children,
-}) => {
+const ButtonAnimalsSection: React.FC = () => {
   return (
     <div className="flex justify-center h-full w-full mx-auto">
       <Link href="/animaux">

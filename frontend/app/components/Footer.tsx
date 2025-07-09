@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -14,27 +15,34 @@ export default function Footer() {
             Notre mission est de trouver des foyers aimants pour chaque animal
             abandonné et de promouvoir le bien-être animal.
           </p>
-
           <div className="icon-container flex justify-center md:justify-start gap-4">
-            <img
+            <Image
               src="/icons/facebook.png"
               alt="Facebook"
-              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+              width={32} // ajuste selon ta taille (w-7 => 28px, w-8 => 32px)
+              height={32}
+              className="filter invert"
             />
-            <img
+            <Image
               src="/icons/instagram.png"
               alt="Instagram"
-              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+              width={32}
+              height={32}
+              className="filter invert"
             />
-            <img
+            <Image
               src="/icons/linkedin.png"
               alt="LinkedIn"
-              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+              width={32}
+              height={32}
+              className="filter invert"
             />
-            <img
+            <Image
               src="/icons/twitch.png"
               alt="Twitch"
-              className="w-7 h-7 sm:w-8 sm:h-8 filter invert"
+              width={32}
+              height={32}
+              className="filter invert"
             />
           </div>
         </div>
@@ -52,12 +60,11 @@ export default function Footer() {
           </Link>
 
           <Link href="/guide">
-          <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
-            Conseils d'adoption
-          </p>
+            <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
+              Conseils d&apos;adoption
+            </p>
           </Link>
 
-      
           <p className="mb-2 cursor-pointer hover:text-blue-200 text-sm sm:text-base">
             Mentions légales
           </p>

@@ -22,9 +22,9 @@ export default function VolunteerAdopter() {
         </div>
         <div
           onClick={() => openDoor(!door)}
- className="mt-10 text-center text-2xl cursor-pointer hover:underline hover:text-blue-600 transition-all duration-200"
->
-          Je n'ai pas encore de compte?
+          className="mt-10 text-center text-2xl cursor-pointer hover:underline hover:text-blue-600 transition-all duration-200"
+        >
+          Je n&apos;ai pas encore de compte?
         </div>
         {door && (
           <div className="  mt-6 text-center text-2xl flex flex-row items-center justify-center gap-32">

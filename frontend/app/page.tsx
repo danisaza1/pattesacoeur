@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image"; // Import Image de Next.js
 import Grid from "./components/Grid";
 import SearchForm from "./components/SearchForm";
 import Header from "./components/Header";
@@ -23,7 +24,7 @@ export default function Home() {
     if (animal_type) query.append("animal_type", animal_type);
     if (city) query.append("city", city);
 
-    router.push(`/adopter?${query.toString()}`); // ✅ Redirection ici
+    router.push(`/animaux?${query.toString()}`); // ✅ Redirection ici
   };
 
   return (
@@ -34,11 +35,13 @@ export default function Home() {
         {/* HERO section avec image à gauche et texte à droite */}
         <section className="w-full md:h-[588px] flex flex-col md:flex-row items-center justify-between bg-[#4682a9]">
           {/* Image à gauche */}
-          <div className="w-full md:w-1/2 h-64 md:h-full">
-            <img
+          <div className="w-full md:w-1/2 h-64 md:h-full relative">
+            <Image
               src="/images/bg.jpg"
               alt="Chien mignon"
-              className="w-full h-full object-cover md:object-cover"
+              fill
+              style={{ objectFit: "cover" }}
+              priority // Optionnel, si tu veux charger l’image rapidement
             />
           </div>
 
@@ -46,12 +49,12 @@ export default function Home() {
           <div className="w-full md:w-1/2 px-6 py-8 md:p-12 flex flex-col justify-center items-center md:items-start text-white">
             <div className="text-center md:text-left max-w-xl">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-                DONNONS-LEUR AUTANT QU'ILS NOUS APPORTENT
+                DONNONS-LEUR AUTANT QU&apos;ILS NOUS APPORTENT
               </h2>
               <p className="text-base sm:text-lg mb-6">
-                Chaque jour, des milliers d'animaux attendent une famille
+                Chaque jour, des milliers d&apos;animaux attendent une famille
                 aimante. Trouvez votre compagnon idéal parmi nos animaux
-                disponibles à l'adoption.
+                disponibles à l&apos;adoption.
               </p>
             </div>
             <SearchForm

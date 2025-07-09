@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -46,6 +47,7 @@ export default function VolunteerForm() {
         address: city,
         zipcode: zipcode,
         motivation: motivation,
+        id: 0,
       };
 
       const createdVolunteer = await PostVolunteer(newVolunteer);
@@ -76,9 +78,12 @@ export default function VolunteerForm() {
       setSelectedDate(null);
       setStartTime(null);
       setEndTime(null);
-    } catch (error: any) {
-      // Affiche l'erreur détaillée dans la console pour diagnostiquer
-      console.error("❌ Erreur lors de l'envoi de la candidature :", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("❌ Erreur lors de l'envoi de la candidature :", error.message);
+      } else {
+        console.error("❌ Erreur inconnue lors de l'envoi de la candidature");
+      }
       alert("Erreur lors de l'envoi de la candidature. Vérifiez la console.");
     }
   };
@@ -86,7 +91,7 @@ export default function VolunteerForm() {
   return (
     <section className="relative">
       <div className="max-w-5xl mx-auto bg-white p-10 rounded-4xl shadow flex flex-col items-center w-full">
-        <h2 className="text-3xl font-semibold mb-6">FORMULAIRE D'INSCRIPTION</h2>
+        <h2 className="text-3xl font-semibold mb-6">FORMULAIRE D&apos;INSCRIPTION</h2>
         <p className="mb-8 text-lg text-gray-600 max-w-xl text-center">
           Remplissez ce formulaire pour joindre notre réseau de bénévoles.
         </p>
