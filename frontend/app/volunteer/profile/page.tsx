@@ -32,11 +32,16 @@ export default function ProfilePage() {
   >({});
 
   const [token, setToken] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
+
+  // Effet pour récupérer le token du localStorage
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   }, []);
 
+  // Effet pour récupérer les données du bénévole lorsque le token est disponible
   useEffect(() => {
     const fetchData = async () => {
       if (!token) {
@@ -54,12 +59,13 @@ export default function ProfilePage() {
         if (res.ok) {
           const data: Volunteer = await res.json();
           setVolunteer(data);
-          setForm(data);
+          setForm(data); // Initialise le formulaire avec les données récupérées
         } else {
+          // Si le token est invalide ou expiré, redirige vers la page de connexion
           router.push("/volunteer/login");
         }
       } catch (err) {
-        console.error("Erreur :", err);
+        console.error("Erreur lors de la récupération des données du bénévole :", err);
         router.push("/volunteer/login");
       } finally {
         setLoading(false);
@@ -69,23 +75,38 @@ export default function ProfilePage() {
     if (token) {
       fetchData();
     }
-  }, [router, token]);
+  }, [router, token]); // Re-exécuter lorsque le routeur ou le token change
 
+  // Gère les changements des champs du formulaire
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Gère la soumission de la mise à jour du profil
   const handleSubmit = async () => {
-    if (!token || !volunteer) return;
-
-    if (form.password && form.password !== form.password_confirm) {
-      alert("Les mots de passe ne correspondent pas.");
+    if (!token || !volunteer) {
+      setMessage({ type: 'error', text: 'Token d\'authentification ou données du bénévole manquantes.' });
       return;
     }
 
-    // Extraemos password_confirm y lo renombramos para evitar warning de variable no usada
-    const { password_confirm: _password_confirm, ...dataToSend } = form;
+    // Vérifie si les mots de passe correspondent si un nouveau mot de passe est fourni
+    if (form.password && form.password !== form.password_confirm) {
+      setMessage({ type: 'error', text: "Les mots de passe ne correspondent pas." });
+      return;
+    }
+
+    // Déstructure le formulaire pour omettre explicitement password_confirm
+    const { password_confirm, ...restOfForm } = form;
+
+    // dataToSend contient maintenant toutes les propriétés sauf password_confirm
+    const dataToSend: Partial<Volunteer> & { password?: string } = { ...restOfForm };
+
+    // Si le champ du mot de passe est vide, le supprimer de dataToSend
+    // Cela évite d'envoyer une chaîne vide pour le mot de passe si l'utilisateur ne veut pas le modifier
+    if (dataToSend.password === "") {
+      delete dataToSend.password;
+    }
 
     try {
       const res = await fetch(
@@ -101,22 +122,31 @@ export default function ProfilePage() {
       );
 
       if (res.ok) {
-        alert("Profil mis à jour 🎉");
+        setMessage({ type: 'success', text: "Profil mis à jour 🎉" });
+        // Optionnellement, rafraîchir les données pour mettre à jour le formulaire avec les dernières informations, ou effacer les champs de mot de passe
+        setForm((prev) => ({ ...prev, password: "", password_confirm: "" }));
       } else {
-        alert("Erreur lors de la mise à jour");
+        const errorData = await res.json();
+        setMessage({ type: 'error', text: `Erreur lors de la mise à jour : ${errorData.detail || res.statusText}` });
       }
     } catch (err) {
-      console.error(err);
-      alert("Erreur lors de la mise à jour");
+      console.error("Erreur lors de la mise à jour du profil :", err);
+      setMessage({ type: 'error', text: "Erreur lors de la mise à jour du profil." });
     }
   };
 
+  // Gère la confirmation de suppression du compte
   const handleDelete = async () => {
-    if (!token || !volunteer) return;
-    const confirmDelete = window.confirm(
-      "Voulez-vous vraiment supprimer votre compte ?"
-    );
-    if (!confirmDelete) return;
+    setShowConfirmDelete(true);
+  };
+
+  const confirmDeleteAccount = async () => {
+    setShowConfirmDelete(false); // Ferme la modale de confirmation
+
+    if (!token || !volunteer) {
+      setMessage({ type: 'error', text: 'Token d\'authentification ou données du bénévole manquantes.' });
+      return;
+    }
 
     try {
       const res = await fetch(
@@ -130,31 +160,49 @@ export default function ProfilePage() {
       );
 
       if (res.ok) {
-        alert("Compte supprimé 😢");
-        localStorage.removeItem("token");
-        router.push("/");
+        setMessage({ type: 'success', text: "Compte supprimé 😢" });
+        localStorage.removeItem("token"); // Efface le token en cas de suppression réussie
+        router.push("/"); // Redirige vers la page d'accueil
       } else {
-        alert("Erreur lors de la suppression");
+        const errorData = await res.json();
+        setMessage({ type: 'error', text: `Erreur lors de la suppression : ${errorData.detail || res.statusText}` });
       }
     } catch (err) {
-      console.error(err);
-      alert("Erreur lors de la suppression");
+      console.error("Erreur lors de la suppression du compte :", err);
+      setMessage({ type: 'error', text: "Erreur lors de la suppression du compte." });
     }
   };
 
-  if (loading) return <div className="p-8">Chargement...</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="text-xl font-semibold text-gray-700">Chargement...</div>
+      </div>
+    );
+  }
 
   return (
     <>
       <Header />
-      <div className="max-w-2xl mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-6">Mon Profil</h1>
+      <div className="max-w-2xl mx-auto p-8 bg-white shadow-lg rounded-lg my-8">
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-[#324960]">Mon Profil</h1>
 
-        <div className="space-y-4">
+        {message && (
+          <div
+            className={`p-4 mb-4 rounded-md text-center ${
+              message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}
+            role="alert"
+          >
+            {message.text}
+          </div>
+        )}
+
+        <div className="space-y-6">
           <label className="block">
-            <span>Prénom</span>
+            <span className="text-gray-700 font-medium mb-1 block">Prénom</span>
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="first_name"
               value={form.first_name || ""}
               onChange={handleChange}
@@ -162,9 +210,9 @@ export default function ProfilePage() {
           </label>
 
           <label className="block">
-            <span>Nom</span>
+            <span className="text-gray-700 font-medium mb-1 block">Nom</span>
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="last_name"
               value={form.last_name || ""}
               onChange={handleChange}
@@ -172,62 +220,66 @@ export default function ProfilePage() {
           </label>
 
           <label className="block">
-            <span>Email</span>
+            <span className="text-gray-700 font-medium mb-1 block">Email</span>
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="email"
               value={form.email || ""}
               onChange={handleChange}
+              type="email"
             />
           </label>
 
           <label className="block">
-            <span>Téléphone</span>
+            <span className="text-gray-700 font-medium mb-1 block">Téléphone</span>
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="telephone"
               value={form.telephone || ""}
               onChange={handleChange}
+              type="tel"
             />
           </label>
 
           <label className="block">
-            <span>Code postal</span>
+            <span className="text-gray-700 font-medium mb-1 block">Code postal</span>
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="zipcode"
               value={form.zipcode || ""}
               onChange={handleChange}
+              type="text"
             />
           </label>
 
           <label className="block">
-            <span>Adresse</span>
+            <span className="text-gray-700 font-medium mb-1 block">Adresse</span>
             <input
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="address"
               value={form.address || ""}
               onChange={handleChange}
+              type="text"
             />
           </label>
 
           <label className="block">
-            <span>Nouveau mot de passe</span>
+            <span className="text-gray-700 font-medium mb-1 block">Nouveau mot de passe</span>
             <input
               type="password"
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="password"
               value={form.password || ""}
               onChange={handleChange}
-              placeholder="Si vide, pas de modification"
+              placeholder="Laisser vide pour ne pas modifier"
             />
           </label>
 
           <label className="block">
-            <span>Confirmation du mot de passe</span>
+            <span className="text-gray-700 font-medium mb-1 block">Confirmation du mot de passe</span>
             <input
               type="password"
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#4682a9] focus:border-transparent transition duration-200"
               name="password_confirm"
               value={form.password_confirm || ""}
               onChange={handleChange}
@@ -235,22 +287,46 @@ export default function ProfilePage() {
           </label>
         </div>
 
-        <div className="mt-6 flex gap-4">
+        <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <button
             onClick={handleSubmit}
-            className="flex-1 bg-[#324960] text-white font-bold px-4 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:text-black hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+            className="flex-1 bg-[#324960] text-white font-bold px-6 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-[#4682a9] hover:text-white hover:shadow-[0_6px_12px_rgba(6,182,212,0.4)] active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out text-lg"
           >
             Mettre à jour
           </button>
           <button
             onClick={handleDelete}
-            className="flex-1 bg-red-600 text-white font-bold px-4 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-red-700 hover:shadow-md active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out"
+            className="flex-1 bg-red-600 text-white font-bold px-6 py-3 rounded-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:bg-red-700 hover:shadow-md active:translate-y-1 active:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out text-lg"
           >
             Supprimer mon compte
           </button>
         </div>
       </div>
       <Footer />
+
+      {/* Custom Confirmation Modal for Delete */}
+      {showConfirmDelete && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full text-center">
+            <h3 className="text-xl font-bold mb-4 text-gray-800">Confirmation de suppression</h3>
+            <p className="text-gray-700 mb-6">Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.</p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setShowConfirmDelete(false)}
+                className="bg-gray-300 text-gray-800 font-bold px-5 py-2 rounded-full hover:bg-gray-400 transition duration-200"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={confirmDeleteAccount}
+                className="bg-red-600 text-white font-bold px-5 py-2 rounded-full hover:bg-red-700 transition duration-200"
+              >
+                Confirmer la suppression
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
