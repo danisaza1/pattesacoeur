@@ -84,7 +84,8 @@ export default function ProfilePage() {
       return;
     }
 
-    const { password_confirm: _, ...dataToSend } = form;
+    // Aquí se extrae password_confirm pero no se usa, solo para excluirlo de dataToSend
+    const { password_confirm, ...dataToSend } = form;
 
     try {
       const res = await fetch(
