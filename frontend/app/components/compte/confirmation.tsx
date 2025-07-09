@@ -35,7 +35,7 @@ export default async function ReturnAdopter() {
         </div>
         <Link href="/">
           <button className="px-8 py-4 text-lg font-bold text-white bg-[#324960] rounded-lg shadow hover:bg-[#6DA2B5] hover:shadow-lg active:translate-y-1 transition-all duration-200">
-            retour à l'accueil
+            retour à l&apos;accueil
           </button>
         </Link>
       </div>

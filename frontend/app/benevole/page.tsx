@@ -20,7 +20,7 @@ export default function BenevolePage() {
           <h2 className="text-5xl font-bold">DEVENIR BÉNÉVOLE</h2>
           <p className="mt-4 text-xl max-w-2xl text-justify">
             Offrez votre temps, changez des vies. Chez Adaopte, chaque bénévole
-            contribue à redonner espoir aux animaux en attente d'un foyer.
+            contribue à redonner espoir aux animaux en attente d&apos;un foyer.
           </p>
         </div>
       </section>

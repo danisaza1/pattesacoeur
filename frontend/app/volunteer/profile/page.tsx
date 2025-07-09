@@ -6,7 +6,6 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 type Disponibility = {
-  // Exemple de type, adapte selon ta donnée réelle
   days: string[];
   hours: string[];
 };
@@ -20,7 +19,7 @@ interface Volunteer {
   address: string;
   zipcode: string;
   telephone: string;
-  disponibility: Disponibility; // évite any
+  disponibility: Disponibility;
   status: string;
 }
 
@@ -32,7 +31,6 @@ export default function ProfilePage() {
     Partial<Volunteer> & { password?: string; password_confirm?: string }
   >({});
 
-  // token localStorage à l'intérieur d'un useEffect ou d'une fonction, pas directement dans render
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -86,8 +84,7 @@ export default function ProfilePage() {
       return;
     }
 
-    // Supprime password_confirm de data envoyée
-    const { password_confirm, ...dataToSend } = form;
+    const { password_confirm: _, ...dataToSend } = form;
 
     try {
       const res = await fetch(

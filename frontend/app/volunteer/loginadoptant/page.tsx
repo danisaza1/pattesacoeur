@@ -4,13 +4,20 @@ import { useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
+interface UserInfo {
+  nom?: string;
+  email?: string;
+  telephone?: string;
+  token?: string;
+  [key: string]: string | undefined;
+}
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const [userInfo, setUserInfo] = useState<any>(null);
-
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const animauxFavoris = [
     { nom: "Nala", type: "Chat" },
@@ -30,13 +37,12 @@ export default function Login() {
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await response.json();
+    const data: UserInfo = await response.json();
 
     if (response.ok) {
       setUserInfo(data);
       setLoginError("");
-      // Sauvegarde du token en localStorage (à adapter selon ta réponse API)
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token || "");
       // Redirection vers le tableau de bord
     } else {
       setLoginError("Échec de la connexion. Vérifie tes identifiants.");
@@ -44,7 +50,10 @@ export default function Login() {
   };
 
   const handleUserInfoChange = (field: string, value: string) => {
-    setUserInfo((prev: any) => ({ ...prev, [field]: value }));
+    setUserInfo((prev) => ({
+      ...(prev || {}),
+      [field]: value,
+    }));
   };
 
   return (
