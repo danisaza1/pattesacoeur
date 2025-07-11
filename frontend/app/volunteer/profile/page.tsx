@@ -35,13 +35,10 @@ export default function ProfilePage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-
-  // Effet pour récupérer le token du localStorage
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   }, []);
 
-  // Effet pour récupérer les données du bénévole lorsque le token est disponible
   useEffect(() => {
     const fetchData = async () => {
       if (!token) {
@@ -59,9 +56,8 @@ export default function ProfilePage() {
         if (res.ok) {
           const data: Volunteer = await res.json();
           setVolunteer(data);
-          setForm(data); // Initialise le formulaire avec les données récupérées
+          setForm(data);
         } else {
-          // Si le token est invalide ou expiré, redirige vers la page de connexion
           router.push("/volunteer/login");
         }
       } catch (err) {
@@ -75,35 +71,27 @@ export default function ProfilePage() {
     if (token) {
       fetchData();
     }
-  }, [router, token]); // Re-exécuter lorsque le routeur ou le token change
+  }, [router, token]);
 
-  // Gère les changements des champs du formulaire
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Gère la soumission de la mise à jour du profil
   const handleSubmit = async () => {
     if (!token || !volunteer) {
       setMessage({ type: 'error', text: 'Token d\'authentification ou données du bénévole manquantes.' });
       return;
     }
 
-    // Vérifie si les mots de passe correspondent si un nouveau mot de passe est fourni
     if (form.password && form.password !== form.password_confirm) {
       setMessage({ type: 'error', text: "Les mots de passe ne correspondent pas." });
       return;
     }
 
-    // Déstructure le formulaire pour omettre explicitement password_confirm
-    const { password_confirm, ...restOfForm } = form;
+    const dataToSend = { ...form };
+    delete dataToSend.password_confirm;
 
-    // dataToSend contient maintenant toutes les propriétés sauf password_confirm
-    const dataToSend: Partial<Volunteer> & { password?: string } = { ...restOfForm };
-
-    // Si le champ du mot de passe est vide, le supprimer de dataToSend
-    // Cela évite d'envoyer une chaîne vide pour le mot de passe si l'utilisateur ne veut pas le modifier
     if (dataToSend.password === "") {
       delete dataToSend.password;
     }
@@ -123,7 +111,6 @@ export default function ProfilePage() {
 
       if (res.ok) {
         setMessage({ type: 'success', text: "Profil mis à jour 🎉" });
-        // Optionnellement, rafraîchir les données pour mettre à jour le formulaire avec les dernières informations, ou effacer les champs de mot de passe
         setForm((prev) => ({ ...prev, password: "", password_confirm: "" }));
       } else {
         const errorData = await res.json();
@@ -135,13 +122,12 @@ export default function ProfilePage() {
     }
   };
 
-  // Gère la confirmation de suppression du compte
   const handleDelete = async () => {
     setShowConfirmDelete(true);
   };
 
   const confirmDeleteAccount = async () => {
-    setShowConfirmDelete(false); // Ferme la modale de confirmation
+    setShowConfirmDelete(false);
 
     if (!token || !volunteer) {
       setMessage({ type: 'error', text: 'Token d\'authentification ou données du bénévole manquantes.' });
@@ -161,8 +147,8 @@ export default function ProfilePage() {
 
       if (res.ok) {
         setMessage({ type: 'success', text: "Compte supprimé 😢" });
-        localStorage.removeItem("token"); // Efface le token en cas de suppression réussie
-        router.push("/"); // Redirige vers la page d'accueil
+        localStorage.removeItem("token");
+        router.push("/");
       } else {
         const errorData = await res.json();
         setMessage({ type: 'error', text: `Erreur lors de la suppression : ${errorData.detail || res.statusText}` });
@@ -304,7 +290,6 @@ export default function ProfilePage() {
       </div>
       <Footer />
 
-      {/* Custom Confirmation Modal for Delete */}
       {showConfirmDelete && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full text-center">
