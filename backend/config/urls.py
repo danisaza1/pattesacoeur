@@ -22,7 +22,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import HttpResponse
 
 def home(request):
-    return HttpResponse("https://patacoeur-backend.vercel.app/api/animaux")
+    return HttpResponse("https://patacoeur-backend.vercel.app/api/animaux ou /api/lastone")
 urlpatterns = [
     path('', home),
     path('admin/', admin.site.urls),
