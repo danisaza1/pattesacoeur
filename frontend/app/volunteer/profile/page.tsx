@@ -47,7 +47,7 @@ export default function ProfilePage() {
       }
 
       try {
-        const res = await fetch("http://localhost:8000/api/volunteers/me/", {
+        const res = await fetch("http://patacoeur-backend.vercel.app/api/volunteers/me/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -98,7 +98,7 @@ export default function ProfilePage() {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/volunteers/?id=${volunteer.id}`,
+        `http://patacoeur-backend.vercel.app/api/volunteers/?id=${volunteer.id}`,
         {
           method: "PATCH",
           headers: {
@@ -136,7 +136,7 @@ export default function ProfilePage() {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/volunteers/?id=${volunteer.id}`,
+        `http://patacoeur-backend.vercel.app/api/volunteers/?id=${volunteer.id}`,
         {
           method: "DELETE",
           headers: {

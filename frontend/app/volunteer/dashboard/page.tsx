@@ -26,7 +26,7 @@ export default function DashboardAdoptant() {
       }
 
       try {
-        const res = await fetch("http://localhost:8000/api/volunteers/me/", {
+        const res = await fetch("http://patacoeur-backend.vercel.app/api/volunteers/me/", {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

@@ -27,7 +27,7 @@ export default function AdoptingForm() {
     console.log("Données envoyées :", formData);
 
     try {
-      const res = await fetch("http://localhost:8000/api/adoptant/", {
+      const res = await fetch("http://patacoeur-backend.vercel.app/api/adoptant/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

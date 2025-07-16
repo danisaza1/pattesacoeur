@@ -7,7 +7,7 @@ interface Adopter {
   location: string;
 }
 export default async function ReturnAdopter() {
-  const res = await fetch("http://localhost:8000/api/lastone", {
+  const res = await fetch("http://patacoeur-backend.vercel.app/api/lastone", {
     cache: "no-store",
   });
 

@@ -16,7 +16,7 @@ export default function Login() {
 
     // Appel à ton API backend pour vérifier l'email + password
     const response = await fetch(
-      "http://patacoeur-backend.vercel.app/api/volunteers/login/",
+      "https://patacoeur-backend.vercel.app/api/adoptant/login/",
       {
         method: "POST",
         headers: {
@@ -108,3 +108,5 @@ export default function Login() {
     </>
   );
 }
+
+

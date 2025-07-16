@@ -31,7 +31,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8000/api/adoptant/login/", {
+    const response = await fetch("http://patacoeur-backend.vercel.app/api/adoptant/login/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

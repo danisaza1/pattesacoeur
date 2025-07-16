@@ -29,7 +29,7 @@ const SearchPage: React.FC = () => {
   // Cargar animales al montar el componente y llenar inputs desde URL si hay parámetros
   useEffect(() => {
     async function fetchAnimals() {
-      const res = await fetch("http://localhost:8000/api/animaux/");
+      const res = await fetch("http://patacoeur-backend.vercel.app/api/animaux/");
       const data = await res.json();
       setAnimals(data);
       setLoading(false);
@@ -142,7 +142,7 @@ Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres pour découvrir
                     className="card rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col items-center bg-white"
                   >
                     <Image
-  src={`http://localhost:8000/images${animal.photo_url.replace( "/data",
+  src={`http://patacoeur-backend.vercel.app/images${animal.photo_url.replace( "/data",
                         ""
                       )}`}
   alt={animal.name}

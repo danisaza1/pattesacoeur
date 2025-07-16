@@ -19,7 +19,7 @@ export interface Availability {
 
 export async function PostVolunteer(volunteer: Volunteer): Promise<Volunteer> {
   try {
-    const response = await fetch("http://localhost:8000/api/volunteers/", {
+    const response = await fetch("http://patacoeur-backend.vercel.app/api/volunteers/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export async function PostVolunteer(volunteer: Volunteer): Promise<Volunteer> {
 
 export async function PostAvailability(availability: Availability): Promise<Availability> {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/availability/", {
+    const response = await fetch("http://patacoeur-backend.vercel.app/api/availability/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
