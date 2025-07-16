@@ -22,7 +22,12 @@ MEDIA_URL = '/images/'  # URL para acceder a las imágenes
 MEDIA_ROOT = BASE_DIR / 'images'  # carpeta física en disco donde están las imágenes
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    '.vercel.app',  # Accepte tous les sous-domaines de vercel.app
+    '.now.sh',      # Ancien domaine de Vercel
+    'localhost', 
+    '127.0.0.1'
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -122,6 +127,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
      "http://localhost:3001",
      "http://localhost:3002"
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",  # Accepte tous les sous-domaines .vercel.app
 ]
 
 CORS_ALLOW_CREDENTIALS = True

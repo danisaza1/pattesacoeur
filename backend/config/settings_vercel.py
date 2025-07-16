@@ -96,7 +96,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",
     "http://localhost:3002",
-    "pattesacoeur-brs3.vercel.app",
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",  # Accepte tous les sous-domaines .vercel.app
 ]
 
 CORS_ALLOW_CREDENTIALS = True
