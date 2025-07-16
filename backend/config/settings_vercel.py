@@ -12,8 +12,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fe8jzg8sh*w13@v#p*-08
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', '.now.sh', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'pattesacoeur-brs3-git-main-danisaza1s-projects.vercel.app',
+    'pattesacoeur-brs3-jdojc413x-danisaza1s-projects.vercel.app',
+    # Ou plus simple, accepter tous les sous-domaines Vercel :
+    '.vercel.app',
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

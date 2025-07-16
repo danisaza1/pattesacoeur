@@ -23,10 +23,12 @@ MEDIA_ROOT = BASE_DIR / 'images'  # carpeta física en disco donde están las im
 
 
 ALLOWED_HOSTS = [
-    '.vercel.app',  # Accepte tous les sous-domaines de vercel.app
-    '.now.sh',      # Ancien domaine de Vercel
-    'localhost', 
-    '127.0.0.1'
+    'localhost',
+    '127.0.0.1',
+    'pattesacoeur-brs3-git-main-danisaza1s-projects.vercel.app',
+    'pattesacoeur-brs3-jdojc413x-danisaza1s-projects.vercel.app',
+    # Ou plus simple, accepter tous les sous-domaines Vercel :
+    '.vercel.app',
 ]
 
 INSTALLED_APPS = [
