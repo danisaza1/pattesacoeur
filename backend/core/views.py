@@ -235,7 +235,3 @@ def adoptant_me(request):
 
 
 
-from django.http import HttpResponse
-
-def home(request):
-    return HttpResponse("Django fonctionne sur Vercel ✅")

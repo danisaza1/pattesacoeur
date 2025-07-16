@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "mon-backend.vercel.app",
+        hostname: "pattesacoeur-brs3.vercel.app",
         pathname: "/images/**",
       },
     ],
