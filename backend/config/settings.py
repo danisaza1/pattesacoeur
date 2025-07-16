@@ -21,8 +21,10 @@ DEBUG = True
 MEDIA_URL = '/images/'  # URL para acceder a las imágenes
 MEDIA_ROOT = BASE_DIR / 'images'  # carpeta física en disco donde están las imágenes
 
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
+vercel_url = os.getenv("VERCEL_URL")
+if vercel_url:
+    ALLOWED_HOSTS.append(vercel_url.replace("https://", "").replace("http://", ""))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -123,6 +125,9 @@ CORS_ALLOWED_ORIGINS = [
      "http://localhost:3002"
 ]
 
+if vercel_url:
+    CORS_ALLOWED_ORIGINS.append(f"https://{vercel_url}")
+
 CORS_ALLOW_CREDENTIALS = True
 
 # 🔐 Configuration des sessions Django
@@ -131,3 +136,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # elle reste active même si l’utilis
 SESSION_SAVE_EVERY_REQUEST = True  # chaque clic ou requête prolonge la session
 
 AUTH_USER_MODEL = 'core.Volunteer'
+
