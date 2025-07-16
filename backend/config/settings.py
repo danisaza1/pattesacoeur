@@ -128,7 +128,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "https://localhost:3000",
      "https://localhost:3001",
-     "https://localhost:3002"
+     "https://localhost:3002",
+      "https://pattesacoeur.vercel.app",
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
