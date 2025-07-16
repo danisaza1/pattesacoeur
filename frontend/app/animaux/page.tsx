@@ -27,15 +27,20 @@ const SearchPage: React.FC = () => {
   const animalsPerPage = 6;
   const [loading, setLoading] = useState(true);
   // Cargar animales al montar el componente y llenar inputs desde URL si hay parámetros
-  useEffect(() => {
-    async function fetchAnimals() {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${API_BASE_URL}/api/animaux/`);
-      const data = await res.json();
-      setAnimals(data);
-      setLoading(false);
+useEffect(() => {
+  async function fetchAnimals() {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+    console.log("API_BASE_URL =", API_BASE_URL);  // <-- ajoute ça
+    if (!API_BASE_URL) {
+      console.error("NEXT_PUBLIC_API_URL n'est pas définie !");
+      return;
     }
-    fetchAnimals();
+    const res = await fetch(`${API_BASE_URL}/api/animaux/`);
+    const data = await res.json();
+    setAnimals(data);
+    setLoading(false);
+  }
+  fetchAnimals();
 
     const params = new URLSearchParams(window.location.search);
     setType(params.get("animal_type") ?? "");
