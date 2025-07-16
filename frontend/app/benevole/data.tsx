@@ -45,7 +45,8 @@ export async function PostVolunteer(volunteer: Volunteer): Promise<Volunteer> {
 
 export async function PostAvailability(availability: Availability): Promise<Availability> {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/availability/", {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+    const response = await fetch(`${API_BASE_URL}/api/availability/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

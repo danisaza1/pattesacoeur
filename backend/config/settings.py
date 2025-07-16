@@ -126,9 +126,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-     "http://localhost:3001",
-     "http://localhost:3002"
+    "https://localhost:3000",
+     "https://localhost:3001",
+     "https://localhost:3002"
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
