@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SearchForm from "../components/SearchForm";
-import Image from 'next/image';
+import Image from "next/image";
 
 interface Animal {
   animal_type: string;
@@ -29,7 +29,8 @@ const SearchPage: React.FC = () => {
   // Cargar animales al montar el componente y llenar inputs desde URL si hay parámetros
   useEffect(() => {
     async function fetchAnimals() {
-      const res = await fetch("http://localhost:8000/api/animaux/");
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+      const res = await fetch(`${API_BASE_URL}/api/animaux/`);
       const data = await res.json();
       setAnimals(data);
       setLoading(false);
@@ -94,6 +95,7 @@ const SearchPage: React.FC = () => {
     setType("");
     setCity("");
   };
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
   return (
     <>
@@ -120,15 +122,17 @@ const SearchPage: React.FC = () => {
             {currentAnimals.length === 0 ? (
               <div className="flex flex-col items-center justify-center">
                 <div className="text-center text-gray-500 mt-12 text-lg">
-Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres pour découvrir d&apos;autres animaux adorables.                </div>
-<div>
-                <Image
-  src="/images/loading.png"
-  alt="loading"
-  width={240} // width in pixels
-  height={240} // height in pixels
-  className="rounded mb-10"
-/>
+                  Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres
+                  pour découvrir d&apos;autres animaux adorables.{" "}
+                </div>
+                <div>
+                  <Image
+                    src="/images/loading.png"
+                    alt="loading"
+                    width={240} // width in pixels
+                    height={240} // height in pixels
+                    className="rounded mb-10"
+                  />
                 </div>
               </div>
             ) : (
@@ -142,14 +146,15 @@ Oups ! Aucun résultat trouvé. Vous pouvez modifier les filtres pour découvrir
                     className="card rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col items-center bg-white"
                   >
                     <Image
-  src={`http://localhost:8000/images${animal.photo_url.replace( "/data",
+                      src={`${API_BASE_URL}/images${animal.photo_url.replace(
+                        "/data",
                         ""
                       )}`}
-  alt={animal.name}
-  width={400} // ajustez selon la taille réelle ou le design
-  height={192}
-  className="w-full h-48 object-contain object-center rounded"
-/>
+                      alt={animal.name}
+                      width={400}
+                      height={192}
+                      className="w-full h-48 object-contain object-center rounded"
+                    />
                     <div className="card-content mt-4 text-center">
                       <div className="text-sm text-gray-500">
                         {animal.animal_type}

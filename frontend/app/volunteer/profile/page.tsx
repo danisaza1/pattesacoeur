@@ -46,8 +46,11 @@ export default function ProfilePage() {
         return;
       }
 
+
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
       try {
-        const res = await fetch("http://localhost:8000/api/volunteers/me/", {
+        const res = await fetch(`${API_BASE_URL}/api/volunteers/me/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -96,10 +99,10 @@ export default function ProfilePage() {
       delete dataToSend.password;
     }
 
-    try {
-      const res = await fetch(
-        `http://localhost:8000/api/volunteers/?id=${volunteer.id}`,
-        {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+try {
+  const res = await fetch(`${API_BASE_URL}/api/volunteers/?id=${volunteer.id}`, {
           method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -134,10 +137,11 @@ export default function ProfilePage() {
       return;
     }
 
-    try {
-      const res = await fetch(
-        `http://localhost:8000/api/volunteers/?id=${volunteer.id}`,
-        {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+try {
+  const res = await fetch(`${API_BASE_URL}/api/volunteers/?id=${volunteer.id}`, {
+        
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,

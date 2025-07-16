@@ -25,8 +25,9 @@ export default function DashboardAdoptant() {
         return;
       }
 
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
       try {
-        const res = await fetch("http://localhost:8000/api/volunteers/me/", {
+        const res = await fetch(`${API_BASE_URL}/api/volunteers/me/`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

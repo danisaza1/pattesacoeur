@@ -14,9 +14,11 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
     // Appel à ton API backend pour vérifier l'email + password
     const response = await fetch(
-      "http://localhost:8000/api/volunteers/login/",
+      `${API_BASE_URL}/api/volunteers/login/`,
       {
         method: "POST",
         headers: {

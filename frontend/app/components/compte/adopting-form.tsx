@@ -26,8 +26,10 @@ export default function AdoptingForm() {
     e.preventDefault();
     console.log("Données envoyées :", formData);
 
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+    
     try {
-      const res = await fetch("http://localhost:8000/api/adoptant/", {
+      const res = await fetch(`${API_BASE_URL}/api/adoptant/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

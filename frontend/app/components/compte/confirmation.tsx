@@ -6,8 +6,12 @@ interface Adopter {
   email: string;
   location: string;
 }
+
+
 export default async function ReturnAdopter() {
-  const res = await fetch("http://localhost:8000/api/lastone", {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  const res = await fetch(`${API_BASE_URL}/api/lastone`, {
     cache: "no-store",
   });
 

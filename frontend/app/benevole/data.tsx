@@ -19,7 +19,9 @@ export interface Availability {
 
 export async function PostVolunteer(volunteer: Volunteer): Promise<Volunteer> {
   try {
-    const response = await fetch("http://localhost:8000/api/volunteers/", {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+    const response = await fetch(`${API_BASE_URL}/api/volunteers/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

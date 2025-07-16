@@ -31,7 +31,9 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8000/api/adoptant/login/", {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+    
+    const response = await fetch(`${API_BASE_URL}/api/adoptant/login/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
