@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path, include  # include pour importer les URLs d'une app
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import HttpResponse
+from core.views import home
 
 def home(request):
     return HttpResponse("La vie est belle !")

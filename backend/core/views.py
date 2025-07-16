@@ -232,3 +232,10 @@ def create_availability(request):
 def adoptant_me(request):
     serializer = AdopterSerializer(request.user)
     return Response(serializer.data)
+
+
+
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Django fonctionne sur Vercel ✅")
